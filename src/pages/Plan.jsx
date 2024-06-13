@@ -8,10 +8,12 @@ import ParticipantsGroupForm from '../components/ParticipantsGroupForm';
 import Modal from '../components/Modal';
 import Typography from '@empuls/dsm/core/typography/Typography';  
 import Button from '@empuls/dsm/core/button/Button'; 
-import Textarea from '@empuls/dsm/core/textarea/Textarea';  
 import DateRangePicker from '@empuls/dsm/core/date-picker/DateRangePicker';
 import ShapeImg from "../assets/images/Shape.svg";
 import { AddFilled, DeleteFilled } from '@fluentui/react-icons';
+import Footer from '../components/Footer'; 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Plan() {
     const [showParticipantsForm, setShowParticipantsForm] = useState(false);
@@ -21,6 +23,9 @@ function Plan() {
     const [dropdownValue, setDropdownValue] = useState(null);
     const [selectedPlanType, setSelectedPlanType] = useState(null);
     const [participantGroups, setParticipantGroups] = useState([{}]);
+    const [isMilestoneSelected, setIsMilestoneSelected] = useState(false);
+    const [isRadioSelected, setIsRadioSelected] = useState(false); 
+    const [errormessage, setErrorMessage] = useState(null);
 
     const handleRadioChange = (e) => {
         if (e.target.value === "createGroup") {
@@ -28,6 +33,7 @@ function Plan() {
         } else {
             setShowParticipantsForm(false);
         }
+        setIsRadioSelected(true); 
     };
 
     const handleApprovalChange = (e) => {
@@ -36,10 +42,6 @@ function Plan() {
         } else {
             setShowApprovalForm(false);
         }
-    };
-
-    const handleButtonClick = () => {
-        setIsModalOpen(true);
     };
 
     const handleCloseModal = () => {
@@ -56,6 +58,11 @@ function Plan() {
 
     const handlePlanTypeClick = (type) => {
         setSelectedPlanType(type);
+        if (type === 'milestone') {
+            setIsMilestoneSelected(true);
+        } else {
+            setIsMilestoneSelected(false);
+        }
     };
 
     const addAnotherGroup = () => {
@@ -63,12 +70,56 @@ function Plan() {
     };
 
     const deleteGroup = (index) => {
-        const newGroups = [...participantGroups];
-        newGroups.splice(index, 1);
+        const newGroups = participantGroups.filter((_, i) => i !== index);
         setParticipantGroups(newGroups);
+    };
+   
+
+    const validateForm = () => {
+        let isValid = true;
+
+       
+        const planName = document.querySelector('input[placeholder="Enter Plan Name"]').value;
+        if (!planName) {
+            toast.error('The Plan Name field is required.');
+            isValid = false;
+            setErrorMessage('The Plan Name field is required.');
+        } else if (!dropdownValue) {
+            toast.error('The Plan Group field is required.');
+            isValid = false;
+            setErrorMessage('The Plan Group field is required.');
+        } else {
+            return isValid;
+        }
+
+    };
+
+    const validateModalForm = () => {
+        let isValid = true;
+       
+        const planGroupName = document.querySelector('input[placeholder="Please enter your name"]').value;
+        if (!planGroupName) {
+            toast.error('The Plan Group Name field is required.');
+            isValid = false;
+        } else if (!value) {
+            toast.error('The Date Range field is required.');
+            isValid = false;
+        } else{
+           return isValid;
+        }
+    };
+
+
+    const handleSaveModal = () => {
+        if (validateModalForm()) {
+            setIsModalOpen(false);
+           
+        }
     };
 
     return (
+        <>
+        
         <div className="outer-container">
             <div className="container">
                 <div className="input-group">
@@ -77,6 +128,11 @@ function Plan() {
                         label="Plan Name"
                         placeholder="Enter Plan Name"
                         required
+                        // helperText={
+                        //     <>
+                        //       {errormessage && <p style={{ color: 'red', fontSize: '12px'  }}>{errormessage}</p>}
+                        //     </>
+                        // }
                     />
                 </div>
                 <div className="input-group">
@@ -99,14 +155,12 @@ function Plan() {
                         />
                     </div>
                 </div>
-                <div className="input-group">
-                    <Textarea
-                        label="Description"
-                        placeholder='Please enter'
-                        required
-                    />
-                </div>
-            </div>
+                <div>
+      
+       
+      </div>
+                
+             </div>
             <div className="box-container">
                 <div className="box-content" onClick={() => handlePlanTypeClick('milestone')}>
                     <div className="image-container">
@@ -115,6 +169,8 @@ function Plan() {
                     <div className="content">
                         <h3>Milestone</h3>
                         <p>This Plan lets you set goals in a progressive pattern. Add a reward for every goal to nudge your participants to keep pushing themselves.</p>
+                       
+                        
                         {selectedPlanType === 'milestone' && (
                             <RadioGroup direction='row' onChange={handleRadioChange}>
                                 <div className="radio-box">
@@ -127,14 +183,16 @@ function Plan() {
                                 </div>
                             </RadioGroup>
                         )}
+
                         {showParticipantsForm && (
                             <>
                                 {participantGroups.map((group, index) => (
                                     <div key={index}>
-                                        <ParticipantsGroupForm onDelete={() => deleteGroup(index)} />
-                                        <div className="seperator"></div>
+                                        <ParticipantsGroupForm index={index} onDelete={deleteGroup} />
+                                         <div className="seperator"></div>
                                     </div>
                                 ))}
+
                                 <div className="addBtn">
                                     <Button 
                                         variant='plain' 
@@ -149,7 +207,8 @@ function Plan() {
                         )}
                     </div>
                 </div>
-                <div className="box-content" onClick={() => handlePlanTypeClick('commission')}>
+                
+                <div className="box-content">
                     <div className="picture">
                         <img src={FrameImg} alt="plan image" className="box-image" />
                     </div>
@@ -158,7 +217,10 @@ function Plan() {
                         <p>Setup a complete commission workflow across Compass which encompasses all aspects of commissions namely, commission quota and plan setting, defining rules and relations between achievements and quota, defining multipliers or bonuses if applicable.</p>
                     </div>
                 </div>
-            </div>  
+            </div>
+
+          
+           
             <Modal isOpen={isModalOpen} onClose={handleCloseModal} size="md" enableOverflow={true}>
                 <div>
                     <Typography.H3>Create a Plan Group</Typography.H3>
@@ -168,18 +230,23 @@ function Plan() {
                         placeholder="Please enter your name"
                         required
                     />
-                    <div style={{ marginTop: '10px', width: '100%' }}>
+
+                    <div style={{ marginTop: '10px', width: '100%'}}>
                         <DateRangePicker 
                             label='Start date-End date' 
                             placeholder='Please Select Start and End Date' 
                             onChange={setValue} 
                             value={value} 
                             required 
+                            style={{ width: '100%' }}
                         />
+
                         <RadioGroup direction='row' onChange={handleApprovalChange} style={{ marginTop: '10px' }}>
                             <Radio value='approve-automatically' label='Approve Automatically ' name='r' defaultChecked />
                             <Radio value='select-approvers' label='Select Approvers' name='r' />
                         </RadioGroup>
+
+
                         {showApprovalForm && (
                             <div style={{ marginTop: '10px', marginBottom: '10px' }}>
                                 <Dropdown 
@@ -196,14 +263,22 @@ function Plan() {
                                 />
                             </div>
                         )}
+
+
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0px' }}>
                         <Button onClick={handleCloseModal} variant='outlined'>Cancel</Button>
-                        <Button ml={2}>Save</Button>
+                        <Button ml={2} onClick={handleSaveModal}>Save</Button>
                     </div>
                 </div>
             </Modal>
+
+       
+        <ToastContainer />
         </div>
+        <Footer isMilestoneSelected={selectedPlanType === 'milestone'} isRadioSelected={isRadioSelected} validateForm={validateForm} />
+        </>
+       
     );
 }
 

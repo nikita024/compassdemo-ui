@@ -92,6 +92,7 @@ h1 {
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin:20px;
+  /* width:100%; */
 }
 
 .box-content {
@@ -350,7 +351,10 @@ cursor: 'pointer'  */
 
 
 .seperator {
-  border:2px solid black;
+  border:1px solid #ccc;
+  /* margin:10px;
+  width:100%; */
+  
  
 }
 

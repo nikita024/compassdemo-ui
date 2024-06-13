@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import Input from '@empuls/dsm/core/input/Input';
 import Dropdown from '@empuls/dsm/core/dropdown/Dropdown';
 import Radio, { RadioGroup } from '@empuls/dsm/core/radio/Radio';
@@ -6,6 +6,8 @@ import { useDropzone } from 'react-dropzone';
 import ShapeImg from "../assets/images/Shape.svg";
 import { Button } from '@empuls/dsm';
 import { DeleteFilled } from '@fluentui/react-icons';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const formatFileSize = (size) => {
     if (size < 1024) {
@@ -19,51 +21,94 @@ const formatFileSize = (size) => {
     }
 };
 
-function ParticipantsGroupForm({ onDelete }) {
+function ParticipantsGroupForm({ index, onDelete  }) {
     const [showAutomaticallyForm, setShowAutomaticallyForm] = useState(false);
     const [files, setFiles] = useState([]);
+    const [groupName, setGroupName] = useState('');
+    const [conditions, setConditions] = useState([]);
+
+
+    useEffect(() => {
+       console.log("index", index)
+    }, [index]);
 
     const handleRadioChange = (e) => {
         setShowAutomaticallyForm(e.target.value === "Automatically");
+        // setShowAutomaticallyForm(isAutomatically);
+        // if (!isAutomatically) {
+        //     onFileUploadChange(false);
+        // }
     };
 
     const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
         onDrop: (acceptedFiles) => {
             setFiles([...files, ...acceptedFiles]);
+            // onFileUploadChange(true);
         }
     });
 
     const handleFileCancel = (index) => {
         setFiles(files.filter((file, i) => i !== index));
+        // setFiles(newFiles);
+        // if (newFiles.length === 0) {
+        //     onFileUploadChange(false);
+
+        // }
     };
 
+    const validateForm = () => {
+        let isValid = true;
+
+        if (!groupName) {
+            toast.error('The Group Name field is required.');
+            isValid = false;
+        }
+
+        if (showAutomaticallyForm && conditions.length === 0) {
+            toast.error('At least one condition must be selected.');
+            isValid = false;
+        }
+
+        if (!showAutomaticallyForm && files.length === 0) {
+            toast.error('At least one file must be uploaded.');
+            isValid = false;
+        }
+
+        return isValid;
+    };
+
+  
     return (
         <div>
             <div className="Add">
                 <Input
                     className="my-class"
-                    label="Name this Group of Participants*"
+                    label="Name this Group of Participants"
                     placeholder="Enter Plan Name"
+                    value={groupName}
+                    onChange={(e) => setGroupName(e.target.value)}
+                    required
                 />
             </div>
             <div className="sub">
                 <RadioGroup direction="row" onChange={handleRadioChange}>
-                    <Radio name="a" value="Automatically" label="Automatically" checked={showAutomaticallyForm} />
+                    <Radio name={`radio-${index}`} value="Automatically" label="Automatically" checked={showAutomaticallyForm} />
                     <div style={{ marginRight: "10px" }}>
                         <img src={ShapeImg} alt="ShapeImg" className="shape" />
                     </div>
-                    <Radio name="a" value="Manually" label="Manually" checked={!showAutomaticallyForm} />
+                    <Radio name={`radio-${index}`} value="Manually" label="Manually" checked={!showAutomaticallyForm} />
                     <img src={ShapeImg} alt="ShapeImg" className="shape" />
                 </RadioGroup>
             </div>
 
             <div>
                 {showAutomaticallyForm ? (
+                    <div className= "drop" style={{marginBottom: "20px"}}>
                     <Dropdown
                         isMulti={true}
                         isCreatable
                         placeholder="Select Option"
-                        label="Add Condition*"
+                        label="Add Condition"
                         options={[
                             { value: 'Theresa Webb', label: 'Theresa Webb' },
                             { value: 'Bessie Cooper', label: 'Bessie Cooper' },
@@ -71,7 +116,11 @@ function ParticipantsGroupForm({ onDelete }) {
                             { value: 'Brooklyn Simmons', label: 'Brooklyn Simmons' },
                             { value: 'Leslie Alexander', label: 'Leslie Alexander' }
                         ]}
+                        value={conditions}
+                        onChange={setConditions}
+                        required
                     />
+                    </div>
                 ) : (
                     <div>
                         {files && files.length ? (
@@ -112,16 +161,19 @@ function ParticipantsGroupForm({ onDelete }) {
                     </div>
                 )}
             </div>
-            <div className="delBtn">
-                <Button 
-                    variant='plain' 
-                    color='primary' 
-                    onClick={onDelete} 
-                    startIcon={<DeleteFilled size={18} fill='#0245F0' />}
-                >
-                    Delete Group
-                </Button>
-            </div>
+            {index && index !== 0 ? (
+                <div className="delBtn">
+                    <Button 
+                        variant='plain' 
+                        color='primary' 
+                        onClick={() => onDelete(index)} 
+                        startIcon={<DeleteFilled size={18} fill='#0245F0' />}
+                    >
+                        Delete Group
+                    </Button>
+                </div>
+            ) : null}
+             <ToastContainer />
         </div>
     );
 }
