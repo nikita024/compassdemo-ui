@@ -10,7 +10,7 @@ import Typography from '@empuls/dsm/core/typography/Typography';
 import Button from '@empuls/dsm/core/button/Button'; 
 import DateRangePicker from '@empuls/dsm/core/date-picker/DateRangePicker';
 import ShapeImg from "../assets/images/Shape.svg";
-import { AddFilled, DeleteFilled } from '@fluentui/react-icons';
+import { AddFilled } from '@fluentui/react-icons';
 import Footer from '../components/Footer'; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -26,6 +26,20 @@ function Plan() {
     const [isMilestoneSelected, setIsMilestoneSelected] = useState(false);
     const [isRadioSelected, setIsRadioSelected] = useState(false); 
     const [errormessage, setErrorMessage] = useState(null);
+    const [selectedApprovers, setSelectedApprovers] = useState([]); 
+    const [groupName, setGroupName] = useState('');
+    const [isManualFiles, setIsManualFiles] = useState(false);
+    const [isAutomaticDropdownSelected, setIsAutomaticDropdownSelected] = useState(false);
+
+    const [newPlanGroupName, setNewPlanGroupName] = useState('');
+    const [dropdownOptions, setDropdownOptions] = useState([
+        { value: 'Theresa Webb', label: 'Theresa Webb' },
+        { value: 'Bessie Cooper', label: 'Bessie Cooper' },
+        { value: 'Dianne Russell', label: 'Dianne Russell' },
+        { value: 'Brooklyn Simmons', label: 'Brooklyn Simmons' },
+        { value: 'Leslie Alexander', label: 'Leslie Alexander' },
+        { value: 'new-plan-group', label: 'Create New Plan Group' }
+    ]);
 
     const handleRadioChange = (e) => {
         if (e.target.value === "createGroup") {
@@ -41,6 +55,7 @@ function Plan() {
             setShowApprovalForm(true);
         } else {
             setShowApprovalForm(false);
+            setSelectedApprovers([]); 
         }
     };
 
@@ -73,11 +88,9 @@ function Plan() {
         const newGroups = participantGroups.filter((_, i) => i !== index);
         setParticipantGroups(newGroups);
     };
-   
 
     const validateForm = () => {
         let isValid = true;
-
        
         const planName = document.querySelector('input[placeholder="Enter Plan Name"]').value;
         if (!planName) {
@@ -88,38 +101,55 @@ function Plan() {
             toast.error('The Plan Group field is required.');
             isValid = false;
             setErrorMessage('The Plan Group field is required.');
+        } else if (!groupName) {
+            toast.error('Name this Group of Participants field is required.');
+            isValid = false;
+        } else if (isAutomaticDropdownSelected) {
+            toast.error('Add condition field is required.');
+            isValid = false;
         } else {
             return isValid;
         }
-
     };
 
     const validateModalForm = () => {
         let isValid = true;
        
-        const planGroupName = document.querySelector('input[placeholder="Please enter your name"]').value;
-        if (!planGroupName) {
-            toast.error('The Plan Group Name field is required.');
+        const planName = document.querySelector('input[placeholder="Please enter the name"]').value;
+        const planGroupName = document.querySelector('input[placeholder="Enter Group Name"]').value;
+        console.log("plangroup", planName, planGroupName)
+        if (!planName) {
+            toast.error('The Plan Name field is required.');
             isValid = false;
         } else if (!value) {
             toast.error('The Date Range field is required.');
             isValid = false;
-        } else{
-           return isValid;
+        } else if (showApprovalForm && selectedApprovers.length === 0) {
+            toast.error('At least one approver must be selected.');
+            isValid = false;
+        } else if (!planGroupName) {
+            toast.error('The Plan Group Name field is required.');
+            isValid = false;
+        } else {
+            return isValid;
         }
     };
 
-
     const handleSaveModal = () => {
         if (validateModalForm()) {
+            const newOption = { value: newPlanGroupName, label: newPlanGroupName };
+            // setDropdownOptions([...dropdownOptions, newOption]);
+            setDropdownValue(newOption);  
             setIsModalOpen(false);
-           
         }
+    };
+
+    const handleApproversChange = (data) => {
+        setSelectedApprovers(data);
     };
 
     return (
         <>
-        
         <div className="outer-container">
             <div className="container">
                 <div className="input-group">
@@ -128,11 +158,6 @@ function Plan() {
                         label="Plan Name"
                         placeholder="Enter Plan Name"
                         required
-                        // helperText={
-                        //     <>
-                        //       {errormessage && <p style={{ color: 'red', fontSize: '12px'  }}>{errormessage}</p>}
-                        //     </>
-                        // }
                     />
                 </div>
                 <div className="input-group">
@@ -142,25 +167,14 @@ function Plan() {
                             placeholder='Select Option'
                             isCreatable={true}
                             onChange={handleDropdownChange}
-                            options={[
-                                { value: 'Theresa Webb', label: 'Theresa Webb' },
-                                { value: 'Bessie Cooper', label: 'Bessie Cooper' },
-                                { value: 'Dianne Russell', label: 'Dianne Russell' },
-                                { value: 'Brooklyn Simmons', label: 'Brooklyn Simmons' },
-                                { value: 'Leslie Alexander', label: 'Leslie Alexander' },
-                                { value: 'new-plan-group', label: 'Create New Plan Group' }
-                            ]}
+                            options={dropdownOptions}
                             value={dropdownValue}
                             required
                         />
                     </div>
                 </div>
-                <div>
-      
-       
-      </div>
-                
-             </div>
+                <div></div>   
+            </div>
             <div className="box-container">
                 <div className="box-content" onClick={() => handlePlanTypeClick('milestone')}>
                     <div className="image-container">
@@ -170,7 +184,6 @@ function Plan() {
                         <h3>Milestone</h3>
                         <p>This Plan lets you set goals in a progressive pattern. Add a reward for every goal to nudge your participants to keep pushing themselves.</p>
                        
-                        
                         {selectedPlanType === 'milestone' && (
                             <RadioGroup direction='row' onChange={handleRadioChange}>
                                 <div className="radio-box">
@@ -188,7 +201,14 @@ function Plan() {
                             <>
                                 {participantGroups.map((group, index) => (
                                     <div key={index}>
-                                        <ParticipantsGroupForm index={index} onDelete={deleteGroup} />
+                                        <ParticipantsGroupForm 
+                                            index={index} 
+                                            onDelete={deleteGroup} 
+                                            groupName={groupName} 
+                                            setGroupName={setGroupName}
+                                            setIsManualFiles={setIsManualFiles}
+                                            setIsAutomaticDropdownSelected={setIsAutomaticDropdownSelected}
+                                        />
                                          <div className="seperator"></div>
                                     </div>
                                 ))}
@@ -218,8 +238,6 @@ function Plan() {
                     </div>
                 </div>
             </div>
-
-          
            
             <Modal isOpen={isModalOpen} onClose={handleCloseModal} size="md" enableOverflow={true}>
                 <div>
@@ -227,7 +245,9 @@ function Plan() {
                     <Input
                         className="my-class"
                         label="Plan Group Name"
-                        placeholder="Please enter your name"
+                        placeholder="Please enter the name"
+                        value={newPlanGroupName}
+                        onChange={(e) => setNewPlanGroupName(e.target.value)}
                         required
                     />
 
@@ -246,8 +266,7 @@ function Plan() {
                             <Radio value='select-approvers' label='Select Approvers' name='r' />
                         </RadioGroup>
 
-
-                        {showApprovalForm && (
+                        {showApprovalForm && ( 
                             <div style={{ marginTop: '10px', marginBottom: '10px' }}>
                                 <Dropdown 
                                     isMulti={true} 
@@ -260,11 +279,11 @@ function Plan() {
                                         { value: 'Dianne Russell', label: 'Dianne Russell' },
                                     ]}
                                     required
+                                    onChange={handleApproversChange}
+                                    value={selectedApprovers}
                                 />
                             </div>
                         )}
-
-
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0px' }}>
                         <Button onClick={handleCloseModal} variant='outlined'>Cancel</Button>
@@ -272,13 +291,10 @@ function Plan() {
                     </div>
                 </div>
             </Modal>
-
-       
-        <ToastContainer />
         </div>
-        <Footer isMilestoneSelected={selectedPlanType === 'milestone'} isRadioSelected={isRadioSelected} validateForm={validateForm} />
+        <Footer isMilestoneSelected={selectedPlanType === 'milestone'} isManualFiles={isManualFiles} isRadioSelected={isRadioSelected} validateForm={validateForm} />
+            <ToastContainer />
         </>
-       
     );
 }
 

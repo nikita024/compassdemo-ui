@@ -6,7 +6,7 @@ import { useDropzone } from 'react-dropzone';
 import ShapeImg from "../assets/images/Shape.svg";
 import { Button } from '@empuls/dsm';
 import { DeleteFilled } from '@fluentui/react-icons';
-import { toast, ToastContainer } from 'react-toastify';
+// import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const formatFileSize = (size) => {
@@ -21,16 +21,31 @@ const formatFileSize = (size) => {
     }
 };
 
-function ParticipantsGroupForm({ index, onDelete  }) {
-    const [showAutomaticallyForm, setShowAutomaticallyForm] = useState(false);
+function ParticipantsGroupForm({ index, onDelete, groupName, setGroupName, setIsManualFiles, setIsAutomaticDropdownSelected  }) {
+    const [showAutomaticallyForm, setShowAutomaticallyForm] = useState(true);
     const [files, setFiles] = useState([]);
-    const [groupName, setGroupName] = useState('');
     const [conditions, setConditions] = useState([]);
 
+    useEffect(() => {
+        if (!showAutomaticallyForm && files.length == 0) {
+            setIsManualFiles(true);
+        } else if (!showAutomaticallyForm && files.length > 0) {
+            setIsManualFiles(false);
+        }
+
+        if (showAutomaticallyForm) {
+            setIsManualFiles(false);
+        }
+    }, [ showAutomaticallyForm, setIsManualFiles, files ]);
 
     useEffect(() => {
-       console.log("index", index)
-    }, [index]);
+        if (conditions.length === 0) {
+            setIsAutomaticDropdownSelected(true);
+        } else {
+            setIsAutomaticDropdownSelected(false);
+        }
+    }, [conditions, setIsAutomaticDropdownSelected]);
+
 
     const handleRadioChange = (e) => {
         setShowAutomaticallyForm(e.target.value === "Automatically");
@@ -56,27 +71,6 @@ function ParticipantsGroupForm({ index, onDelete  }) {
         // }
     };
 
-    const validateForm = () => {
-        let isValid = true;
-
-        if (!groupName) {
-            toast.error('The Group Name field is required.');
-            isValid = false;
-        }
-
-        if (showAutomaticallyForm && conditions.length === 0) {
-            toast.error('At least one condition must be selected.');
-            isValid = false;
-        }
-
-        if (!showAutomaticallyForm && files.length === 0) {
-            toast.error('At least one file must be uploaded.');
-            isValid = false;
-        }
-
-        return isValid;
-    };
-
   
     return (
         <div>
@@ -84,7 +78,7 @@ function ParticipantsGroupForm({ index, onDelete  }) {
                 <Input
                     className="my-class"
                     label="Name this Group of Participants"
-                    placeholder="Enter Plan Name"
+                    placeholder="Enter Group Name"
                     value={groupName}
                     onChange={(e) => setGroupName(e.target.value)}
                     required
@@ -173,7 +167,7 @@ function ParticipantsGroupForm({ index, onDelete  }) {
                     </Button>
                 </div>
             ) : null}
-             <ToastContainer />
+             {/* <ToastContainer /> */}
         </div>
     );
 }
