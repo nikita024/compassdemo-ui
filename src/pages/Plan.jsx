@@ -14,8 +14,11 @@ import { AddFilled } from '@fluentui/react-icons';
 import Footer from '../components/Footer'; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Navbar from '../components/Navbar';
+import { useNavigate } from 'react-router-dom';
 
 function Plan() {
+    const navigate = useNavigate();
     const [showParticipantsForm, setShowParticipantsForm] = useState(false);
     const [showApprovalForm, setShowApprovalForm] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -108,6 +111,9 @@ function Plan() {
             toast.error('Add condition field is required.');
             isValid = false;
         } else {
+            if (isValid) {
+                navigate("/milestone");
+            }
             return isValid;
         }
     };
@@ -115,11 +121,9 @@ function Plan() {
     const validateModalForm = () => {
         let isValid = true;
        
-        const planName = document.querySelector('input[placeholder="Please enter the name"]').value;
-        const planGroupName = document.querySelector('input[placeholder="Enter Group Name"]').value;
-        console.log("plangroup", planName, planGroupName)
-        if (!planName) {
-            toast.error('The Plan Name field is required.');
+        const planGroupName = document.querySelector('input[placeholder="Please enter the plan group name"]').value;
+        if (!planGroupName) {
+            toast.error('The Plan Group Name field is required.');
             isValid = false;
         } else if (!value) {
             toast.error('The Date Range field is required.');
@@ -127,13 +131,11 @@ function Plan() {
         } else if (showApprovalForm && selectedApprovers.length === 0) {
             toast.error('At least one approver must be selected.');
             isValid = false;
-        } else if (!planGroupName) {
-            toast.error('The Plan Group Name field is required.');
-            isValid = false;
         } else {
             return isValid;
         }
     };
+
 
     const handleSaveModal = () => {
         if (validateModalForm()) {
@@ -150,6 +152,7 @@ function Plan() {
 
     return (
         <>
+        <Navbar name="Creating a Plan" />
         <div className="outer-container">
             <div className="container">
                 <div className="input-group">
@@ -245,7 +248,7 @@ function Plan() {
                     <Input
                         className="my-class"
                         label="Plan Group Name"
-                        placeholder="Please enter the name"
+                        placeholder="Please enter the plan group name"
                         value={newPlanGroupName}
                         onChange={(e) => setNewPlanGroupName(e.target.value)}
                         required
@@ -293,7 +296,7 @@ function Plan() {
             </Modal>
         </div>
         <Footer isMilestoneSelected={selectedPlanType === 'milestone'} isManualFiles={isManualFiles} isRadioSelected={isRadioSelected} validateForm={validateForm} />
-            <ToastContainer />
+        <ToastContainer />
         </>
     );
 }

@@ -2,11 +2,11 @@ import React from 'react';
 import { ArrowLeft20Regular } from '@fluentui/react-icons';
 import'../index.css'
 
-const Navbar = () => {
+const Navbar = ({ name }) => {
   return (
-    <div className="navbar">
+    <div className="navbar-new">
         <ArrowLeft20Regular className="back-arrow" />
-    <h1>Creating a Plan</h1>
+        <h1>{name}</h1>
     </div>
   );
 }

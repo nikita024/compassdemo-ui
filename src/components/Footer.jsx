@@ -1,8 +1,7 @@
 import { Button } from '@empuls/dsm';
-import React from 'react';
+
 
 const Footer = ({ isMilestoneSelected, isRadioSelected, validateForm, isManualFiles }) => {
-
 
     return (
         <div className="footer">

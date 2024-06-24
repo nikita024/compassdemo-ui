@@ -34,6 +34,7 @@ html, body, #root {
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin:20px;
+ 
 }
 
 .input-group {
@@ -59,7 +60,7 @@ html, body, #root {
   padding-top: 1px;
 } 
 
-.navbar {
+.navbar-new {
   display: flex;
   align-items: center;
   padding: 10px;
@@ -80,7 +81,7 @@ h1 {
   font-size: 22px;
   color: #333;
   padding-left:10px 
-}
+  }
 
 .box-container {
   display: flex;
@@ -92,6 +93,8 @@ h1 {
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin:20px;
+  margin-bottom: 80px;
+  
   /* width:100%; */
 }
 
@@ -104,6 +107,7 @@ h1 {
   padding: 10px;
   width: 100%;
  
+ 
   
 }
 
@@ -113,6 +117,7 @@ h1 {
   color: #333;  
   margin-bottom: 10px;
   line-height: 15px;
+ 
 }
 
 .content p {
@@ -141,12 +146,18 @@ h1 {
 } */
 
 .footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff; 
+  padding: 10px 20px;
+  margin-top: 120px;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
   display: flex;
   justify-content: space-between;
-  padding: 10px;
-  border-top: 1px solid #ddd;
-  background-color: white; 
-
+  align-items: center;
+  z-index: 1000;
 }
 
 .right-buttons {
@@ -363,6 +374,94 @@ cursor: 'pointer'  */
   justify-content: flex-end;
   padding:10px;
 }
+ 
+
+ /* .milestone-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+ 
+}   */
+
+ /* .accordion-item {
+   margin-bottom: 10px; 
+   margin: 15px;
+   padding:10px;
+
+ 
+
+}
+
+.accordion-header {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.accordion-body {
+  background-color:white;
+  border-top: 1px solid #dee2e6;
+ 
+}
+
+.accordion-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px;
+  border-top: 1px solid #dee2e6;
+ 
+}
+
+.accordion-button {
+  margin-right: 10px;
+}
+  */
+
+
+.milestone-container {
+  width: 100%;
+  box-sizing: border-box;
+
+}
+
+.accordion-item{
+    margin-bottom: 10px;
+    margin-top: 20px;
+    padding:10px;
+   }
+
+   .Milt{
+     display:flex;
+     padding:30px;
+     justify-content: space-between;
+     border:1px solid #ccc;
+     border-radius: 4px;
+   }
+
+   .accordion-header {
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .cond-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 10px;
+  }
+
+
+ .reward-btn {
+    display: flex;
+    /* background-color: blue; */
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    justify-content: flex-end;
+    /* margin-left: 1000px; */
+  }
+
+
+
 
 
 
