@@ -21,7 +21,22 @@ const formatFileSize = (size) => {
     }
 };
 
-function ParticipantsGroupForm({ index, onDelete, groupName, setGroupName, setIsManualFiles, setIsAutomaticDropdownSelected  }) {
+const dropdownOptions = [
+    { value: 'Theresa Webb', label: 'Theresa Webb' },
+    { value: 'Bessie Cooper', label: 'Bessie Cooper' },
+    { value: 'Dianne Russell', label: 'Dianne Russell' },
+    { value: 'Brooklyn Simmons', label: 'Brooklyn Simmons' },
+    { value: 'Leslie Alexander', label: 'Leslie Alexander' }
+]
+
+function ParticipantsGroupForm({ 
+    index, 
+    onDelete, 
+    group, 
+    setGroup, 
+    setIsManualFiles, 
+    setIsAutomaticDropdownSelected  
+}) {
     const [showAutomaticallyForm, setShowAutomaticallyForm] = useState(true);
     const [files, setFiles] = useState([]);
     const [conditions, setConditions] = useState([]);
@@ -67,9 +82,23 @@ function ParticipantsGroupForm({ index, onDelete, groupName, setGroupName, setIs
         // setFiles(newFiles);
         // if (newFiles.length === 0) {
         //     onFileUploadChange(false);
-
         // }
     };
+
+    const handleGroupNameChange = (e) => {
+        setGroup({
+            ...group,
+            groupName: e.target.value
+        });
+    };
+
+    const handleConditionChange = (selectedOptions) => {
+        setConditions(selectedOptions);
+        setGroup({
+            ...group,
+            conditions: selectedOptions
+        });
+    }
 
   
     return (
@@ -77,11 +106,11 @@ function ParticipantsGroupForm({ index, onDelete, groupName, setGroupName, setIs
             <div className="Add">
                 <Input
                     className="my-class"
-                    label="Name this Group of Participants"
-                    placeholder="Enter Group Name"
-                    value={groupName}
-                    onChange={(e) => setGroupName(e.target.value)}
+                    label={`Name Group ${index + 1}`}
+                    placeholder="Enter name for group"
                     required
+                    value={group.groupName}
+                    onChange={handleGroupNameChange}
                 />
             </div>
             <div className="sub">
@@ -98,28 +127,22 @@ function ParticipantsGroupForm({ index, onDelete, groupName, setGroupName, setIs
             <div>
                 {showAutomaticallyForm ? (
                     <div className= "drop" style={{marginBottom: "20px"}}>
-                    <Dropdown
-                        isMulti={true}
-                        isCreatable
-                        placeholder="Select Option"
-                        label="Add Condition"
-                        options={[
-                            { value: 'Theresa Webb', label: 'Theresa Webb' },
-                            { value: 'Bessie Cooper', label: 'Bessie Cooper' },
-                            { value: 'Dianne Russell', label: 'Dianne Russell' },
-                            { value: 'Brooklyn Simmons', label: 'Brooklyn Simmons' },
-                            { value: 'Leslie Alexander', label: 'Leslie Alexander' }
-                        ]}
-                        value={conditions}
-                        onChange={setConditions}
-                        required
-                    />
+                        <Dropdown
+                            isMulti={true}
+                            isCreatable
+                            placeholder="Select Option"
+                            label="Add Condition"
+                            options={dropdownOptions}
+                            value={group.conditions}  
+                            onChange={handleConditionChange}
+                            required 
+                        />
                     </div>
                 ) : (
                     <div>
                         {files && files.length ? (
                             files.map((file, index) => (
-                                <div className='dropzone' key={file.path}>
+                                <div className='dropzone'key={file.path}>
                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                         <div style={{ display: 'flex', alignItems: 'center' }}>
                                             <div style={{ marginRight: '10px', backgroundColor: '#DEFFE7', width: '50px', height: '50px' }}></div>
@@ -167,7 +190,6 @@ function ParticipantsGroupForm({ index, onDelete, groupName, setGroupName, setIs
                     </Button>
                 </div>
             ) : null}
-             {/* <ToastContainer /> */}
         </div>
     );
 }

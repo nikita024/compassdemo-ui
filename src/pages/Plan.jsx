@@ -18,7 +18,9 @@ import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 
 function Plan() {
+
     const navigate = useNavigate();
+
     const [showParticipantsForm, setShowParticipantsForm] = useState(false);
     const [showApprovalForm, setShowApprovalForm] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,7 +35,6 @@ function Plan() {
     const [groupName, setGroupName] = useState('');
     const [isManualFiles, setIsManualFiles] = useState(false);
     const [isAutomaticDropdownSelected, setIsAutomaticDropdownSelected] = useState(false);
-
     const [newPlanGroupName, setNewPlanGroupName] = useState('');
     const [dropdownOptions, setDropdownOptions] = useState([
         { value: 'Theresa Webb', label: 'Theresa Webb' },
@@ -84,17 +85,19 @@ function Plan() {
     };
 
     const addAnotherGroup = () => {
-        setParticipantGroups([...participantGroups, {}]);
+        setParticipantGroups([...participantGroups, { groupName: '', isManualFiles: false, isAutomaticDropdownSelected: false }]);
     };
 
+
     const deleteGroup = (index) => {
-        const newGroups = participantGroups.filter((_, i) => i !== index);
+        const newGroups = [...participantGroups];
+        newGroups.splice(index, 1);
         setParticipantGroups(newGroups);
     };
 
     const validateForm = () => {
         let isValid = true;
-       
+
         const planName = document.querySelector('input[placeholder="Enter Plan Name"]').value;
         if (!planName) {
             toast.error('The Plan Name field is required.');
@@ -104,18 +107,34 @@ function Plan() {
             toast.error('The Plan Group field is required.');
             isValid = false;
             setErrorMessage('The Plan Group field is required.');
-        } else if (!groupName) {
-            toast.error('Name this Group of Participants field is required.');
-            isValid = false;
-        } else if (isAutomaticDropdownSelected) {
-            toast.error('Add condition field is required.');
-            isValid = false;
-        } else {
-            if (isValid) {
-                navigate("/milestone");
+        } else if (selectedPlanType === 'milestone' && showParticipantsForm) {
+            if (isAutomaticDropdownSelected) {
+                toast.error('Add condition field is required.');
+                isValid = false;
             }
-            return isValid;
+            let isGroupValid = true;
+            if (participantGroups && participantGroups.length > 0) {
+                participantGroups.forEach((group, index) => {
+                    if (!group.groupName) {
+                        toast.error(`Name for Group ${index + 1} of Participants is required.`);
+                        isValid = false;
+                        isGroupValid = false;
+                    } else if (group && group.conditions && group.conditions.length === 0) {
+                        toast.error(`Add condition for Group ${index + 1} is required.`);
+                        isValid = false;
+                    }
+                });
+                if (!isGroupValid) {
+                    setErrorMessage('Please fill in all required fields.');
+                }
+            }
         }
+
+        if (isValid) {
+            navigate("/milestone");
+        }
+
+        return isValid;
     };
 
     const validateModalForm = () => {
@@ -136,7 +155,6 @@ function Plan() {
         }
     };
 
-
     const handleSaveModal = () => {
         if (validateModalForm()) {
             const newOption = { value: newPlanGroupName, label: newPlanGroupName };
@@ -152,151 +170,155 @@ function Plan() {
 
     return (
         <>
-        <Navbar name="Creating a Plan" />
-        <div className="outer-container">
-            <div className="container">
-                <div className="input-group">
-                    <Input
-                        className="my-class"
-                        label="Plan Name"
-                        placeholder="Enter Plan Name"
-                        required
-                    />
-                </div>
-                <div className="input-group">
-                    <div className="dropdown-container">
-                        <Dropdown
-                            label="Plan Group"
-                            placeholder='Select Option'
-                            isCreatable={true}
-                            onChange={handleDropdownChange}
-                            options={dropdownOptions}
-                            value={dropdownValue}
+            <Navbar name="Creating a Plan" />
+            <div className="outer-container">
+                <div className="container">
+                    <div className="input-group">
+                        <Input
+                            className="my-class"
+                            label="Plan Name"
+                            placeholder="Enter Plan Name"
                             required
                         />
                     </div>
-                </div>
-                <div></div>   
-            </div>
-            <div className="box-container">
-                <div className="box-content" onClick={() => handlePlanTypeClick('milestone')}>
-                    <div className="image-container">
-                        <img src={FlagImg} alt="plan image" className="box-image" />
+                    <div className="input-group">
+                        <div className="dropdown-container">
+                            <Dropdown
+                                label="Plan Group"
+                                placeholder='Select Option'
+                                isCreatable={true}
+                                onChange={handleDropdownChange}
+                                options={dropdownOptions}
+                                value={dropdownValue}
+                                required
+                            />
+                        </div>
                     </div>
-                    <div className="content">
-                        <h3>Milestone</h3>
-                        <p>This Plan lets you set goals in a progressive pattern. Add a reward for every goal to nudge your participants to keep pushing themselves.</p>
-                       
-                        {selectedPlanType === 'milestone' && (
-                            <RadioGroup direction='row' onChange={handleRadioChange}>
-                                <div className="radio-box">
-                                    <Radio name='radio' value="includeEveryone" label="Include Everyone" />
-                                    <img src={ShapeImg} alt="shape image" className="shape" />
-                                </div>
-                                <div className="radio-box">
-                                    <Radio name='radio' value="createGroup" label="Create a Participants Group" />
-                                    <img src={ShapeImg} alt="shape image" className="shape" />
-                                </div>
-                            </RadioGroup>
-                        )}
-
-                        {showParticipantsForm && (
-                            <>
-                                {participantGroups.map((group, index) => (
-                                    <div key={index}>
-                                        <ParticipantsGroupForm 
-                                            index={index} 
-                                            onDelete={deleteGroup} 
-                                            groupName={groupName} 
-                                            setGroupName={setGroupName}
-                                            setIsManualFiles={setIsManualFiles}
-                                            setIsAutomaticDropdownSelected={setIsAutomaticDropdownSelected}
-                                        />
-                                         <div className="seperator"></div>
+                    <div></div>   
+                </div>
+                <div className="box-container">
+                    <div className="box-content" onClick={() => handlePlanTypeClick('milestone')}>
+                        <div className="image-container">
+                            <img src={FlagImg} alt="plan image" className="box-image" />
+                        </div>
+                        <div className="content">
+                            <h3>Milestone</h3>
+                            <p>This Plan lets you set goals in a progressive pattern. Add a reward for every goal to nudge your participants to keep pushing themselves.</p>
+                        
+                            {selectedPlanType === 'milestone' && (
+                                <RadioGroup direction='row' onChange={handleRadioChange}>
+                                    <div className="radio-box">
+                                        <Radio name='radio' value="includeEveryone" label="Include Everyone" />
+                                        <img src={ShapeImg} alt="shape image" className="shape" />
                                     </div>
-                                ))}
+                                    <div className="radio-box">
+                                        <Radio name='radio' value="createGroup" label="Create a Participants Group" />
+                                        <img src={ShapeImg} alt="shape image" className="shape" />
+                                    </div>
+                                </RadioGroup>
+                            )}
 
-                                <div className="addBtn">
-                                    <Button 
-                                        variant='plain' 
-                                        color='primary' 
-                                        onClick={addAnotherGroup} 
-                                        startIcon={<AddFilled size={18} fill='#0245F0' />}
-                                    >
-                                        Add Another Group
-                                    </Button>
-                                </div> 
-                            </>
-                        )}
+                            {showParticipantsForm && (
+                                <>
+                                    {participantGroups.map((group, index) => (
+                                        <div key={index}>
+                                            <ParticipantsGroupForm 
+                                                index={index}
+                                                onDelete={deleteGroup}
+                                                group={group}
+                                                setGroup={(updatedGroup) => {
+                                                    const updatedGroups = [...participantGroups];
+                                                    updatedGroups[index] = updatedGroup;
+                                                    setParticipantGroups(updatedGroups);
+                                                }}
+                                                setIsManualFiles={setIsManualFiles}
+                                                setIsAutomaticDropdownSelected={setIsAutomaticDropdownSelected}
+                                            />
+                                            <div className="seperator"></div>
+                                        </div>
+                                    ))}
+
+                                    <div className="addBtn">
+                                        <Button 
+                                            variant='plain' 
+                                            color='primary' 
+                                            onClick={addAnotherGroup} 
+                                            startIcon={<AddFilled size={18} fill='#0245F0' />}
+                                        >
+                                            Add Another Group
+                                        </Button>
+                                    </div> 
+                                </>
+                            )}
+                        </div>
+                    </div>
+                    
+                    <div className="box-content">
+                        <div className="picture">
+                            <img src={FrameImg} alt="plan image" className="box-image" />
+                        </div>
+                        <div className="content">
+                            <h3>Commission</h3>
+                            <p>Setup a complete commission workflow across Compass which encompasses all aspects of commissions namely, commission quota and plan setting, defining rules and relations between achievements and quota, defining multipliers or bonuses if applicable.</p>
+                        </div>
                     </div>
                 </div>
-                
-                <div className="box-content">
-                    <div className="picture">
-                        <img src={FrameImg} alt="plan image" className="box-image" />
-                    </div>
-                    <div className="content">
-                        <h3>Commission</h3>
-                        <p>Setup a complete commission workflow across Compass which encompasses all aspects of commissions namely, commission quota and plan setting, defining rules and relations between achievements and quota, defining multipliers or bonuses if applicable.</p>
-                    </div>
-                </div>
-            </div>
-           
-            <Modal isOpen={isModalOpen} onClose={handleCloseModal} size="md" enableOverflow={true}>
-                <div>
-                    <Typography.H3>Create a Plan Group</Typography.H3>
-                    <Input
-                        className="my-class"
-                        label="Plan Group Name"
-                        placeholder="Please enter the plan group name"
-                        value={newPlanGroupName}
-                        onChange={(e) => setNewPlanGroupName(e.target.value)}
-                        required
-                    />
-
-                    <div style={{ marginTop: '10px', width: '100%'}}>
-                        <DateRangePicker 
-                            label='Start date-End date' 
-                            placeholder='Please Select Start and End Date' 
-                            onChange={setValue} 
-                            value={value} 
-                            required 
-                            style={{ width: '100%' }}
+            
+                <Modal isOpen={isModalOpen} onClose={handleCloseModal} size="md" enableOverflow={true}>
+                    <div>
+                        <Typography.H3>Create a Plan Group</Typography.H3>
+                        <Input
+                            className="my-class"
+                            label="Plan Group Name"
+                            placeholder="Please enter the plan group name"
+                            value={newPlanGroupName}
+                            onChange={(e) => setNewPlanGroupName(e.target.value)}
+                            required
                         />
 
-                        <RadioGroup direction='row' onChange={handleApprovalChange} style={{ marginTop: '10px' }}>
-                            <Radio value='approve-automatically' label='Approve Automatically ' name='r' defaultChecked />
-                            <Radio value='select-approvers' label='Select Approvers' name='r' />
-                        </RadioGroup>
+                        <div style={{ marginTop: '10px', width: '100%'}}>
+                            <DateRangePicker 
+                                label='Start date-End date' 
+                                placeholder='Please Select Start and End Date' 
+                                onChange={setValue} 
+                                value={value} 
+                                required 
+                                style={{ width: '100%' }}
+                            />
 
-                        {showApprovalForm && ( 
-                            <div style={{ marginTop: '10px', marginBottom: '10px' }}>
-                                <Dropdown 
-                                    isMulti={true} 
-                                    isCreatable 
-                                    placeholder='You can choose up to 3 approvers' 
-                                    label='Add Approvers (0/3)' 
-                                    options={[
-                                        { value: 'Theresa Webb', label: 'Theresa Webb' },
-                                        { value: 'Bessie Cooper', label: 'Bessie Cooper' },
-                                        { value: 'Dianne Russell', label: 'Dianne Russell' },
-                                    ]}
-                                    required
-                                    onChange={handleApproversChange}
-                                    value={selectedApprovers}
-                                />
-                            </div>
-                        )}
+                            <RadioGroup direction='row' onChange={handleApprovalChange} style={{ marginTop: '10px' }}>
+                                <Radio value='approve-automatically' label='Approve Automatically ' name='r' defaultChecked />
+                                <Radio value='select-approvers' label='Select Approvers' name='r' />
+                            </RadioGroup>
+
+                            {showApprovalForm && ( 
+                                <div style={{ marginTop: '10px', marginBottom: '10px' }}>
+                                    <Dropdown 
+                                        isMulti={true} 
+                                        isCreatable 
+                                        placeholder='You can choose up to 3 approvers' 
+                                        label='Add Approvers (0/3)' 
+                                        options={[
+                                            { value: 'Theresa Webb', label: 'Theresa Webb' },
+                                            { value: 'Bessie Cooper', label: 'Bessie Cooper' },
+                                            { value: 'Dianne Russell', label: 'Dianne Russell' },
+                                        ]}
+                                        required
+                                        onChange={handleApproversChange}
+                                        value={selectedApprovers}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0px' }}>
+                            <Button onClick={handleCloseModal} variant='outlined'>Cancel</Button>
+                            <Button ml={2} onClick={handleSaveModal}>Save</Button>
+                        </div>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0px' }}>
-                        <Button onClick={handleCloseModal} variant='outlined'>Cancel</Button>
-                        <Button ml={2} onClick={handleSaveModal}>Save</Button>
-                    </div>
-                </div>
-            </Modal>
-        </div>
-        <Footer isMilestoneSelected={selectedPlanType === 'milestone'} isManualFiles={isManualFiles} isRadioSelected={isRadioSelected} validateForm={validateForm} />
-        <ToastContainer />
+                </Modal>
+            </div>
+            <Footer isMilestoneSelected={selectedPlanType === 'milestone'} isManualFiles={isManualFiles} isRadioSelected={isRadioSelected} validateForm={validateForm} />
+            <ToastContainer />
         </>
     );
 }
