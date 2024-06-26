@@ -423,9 +423,15 @@ cursor: 'pointer'  */
 }
 
 .accordion-item{
-    margin-bottom: 10px;
-    margin-top: 20px;
+    /* margin-bottom: 10px;
+    margin-top: 20px; */
     padding:10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    color: #333;
+    margin:20px;
    }
 
    .Milt{
@@ -465,6 +471,8 @@ cursor: 'pointer'  */
     border:1px solid #ccc;
     padding:20px;
     border-radius: 5px;
+    margin-bottom: 30px;
+   
   }
 
   .reward-section{
@@ -473,6 +481,56 @@ cursor: 'pointer'  */
     border:1px solid #ccc;
     border-radius: 5px;
   }
+ 
+   /* .save-button {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    padding: 5px  ;
+    border-radius: 5px;
+    cursor: pointer;
+    display:flex;
+    float: right;
+    height:10px; 
+    text-align: center; 
+     
+  }   */
+
+  .check-box {
+    display:flex;
+    flex-direction: row;
+    margin-top: 5px;
+    border:1px solid #ccc;
+    padding:10px ;
+    padding-top: 15px;
+    border-radius: 5px;
+    gap:30px;
+    margin-bottom: 20px;
+  
+    
+  }
+  
+  .score-dropdown {
+      margin-top: 10px;
+      width:50%;
+
+  }
+  .badge-dropdown {
+    margin-top: 10px;
+    width:50%;
+    margin-bottom: 30px;
+  }
+
+  .participants{
+    width:50%;
+    margin-bottom: 10px;
+  }
+  .accordian-container {
+    width: 100%;
+    box-sizing: border-box;
+   
+  }
+
 
 
 
