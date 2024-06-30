@@ -32,9 +32,10 @@ const dropdownOptions = [
 
 const AddForm = ({ deleteAddForm }) => {
   return (
-    <div>
-        <div style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
+    <div className="mil-form" >
+        <div style={{ display: 'flex', flexDirection: 'row', gap: 10  }}>
             <div style={{ width: 500 }}>
+               
                 <Dropdown
                 options={dropdownOptions}
                 size="sm"
@@ -60,8 +61,9 @@ const AddForm = ({ deleteAddForm }) => {
                 onChange={data => console.log(data)}
                 />
             </div>
+            
 
-            <div style={{ width: 500, padding: '17px' }}>
+            <div style={{ width: 500, padding: '17px'}}>
                 <Input
                 className="my-class"
                 label=""

@@ -11,6 +11,7 @@ import Dropdown from '@empuls/dsm/core/dropdown/Dropdown';
 import Radio, { RadioGroup } from '@empuls/dsm/core/radio/Radio';
 import { Checkbox, CheckboxGroup } from '@empuls/dsm';
 import Footer from '../components/Footer';
+import editImg from '../assets/images/Edit.svg';
 
 const rewardDropdownOptions = [
   { value: 'Theresa Webb', label: 'Theresa Webb' },
@@ -30,6 +31,7 @@ const Milestone = () => {
   const [participants, setParticipants] = useState([]);
   const [selectedBadge, setSelectedBadge] = useState([]);
   const [selectedScores, setSelectedScores] = useState([]);
+  const [savedRewards, setSavedRewards] = useState([]);
 
   const handleButtonClick = () => {
     setShowInput(!showInput);
@@ -76,6 +78,9 @@ const Milestone = () => {
     if (participants.length === 0) {
       return true;
     }
+    if (!rewardType) {
+      return true;
+    }
     if (rewardType === 'points' && !rewardAmountCondition) {
       return true;
     }
@@ -86,6 +91,44 @@ const Milestone = () => {
       return true;
     }
     return false;
+  };
+
+  const handleSave = () => {
+    const rewardData = {
+      rewardType,
+      rewardAmountCondition,
+      selectedBadge,
+      selectedScores
+    };
+    setSavedRewards([...savedRewards, rewardData]);
+    setShowRewardForm(false);
+  };
+
+  const renderBadge = (rewardData, index) => {
+    return (
+      <div key={index} className="badge">
+        <p> {rewardData.rewardType}</p>
+
+        <span style={{ 
+              margin: "0px 5px",
+              borderRight: "2px solid #bababa"
+         }}></span>
+
+        {rewardData.rewardType === 'points' && (
+
+        <p> {rewardData.rewardAmountCondition}</p>
+        )}
+        {rewardData.rewardType === 'badges' && (
+          <p> {rewardData.selectedBadge.map(b => b.label).join(', ')}</p>
+        )}
+        {rewardData.rewardType === 'scores' && (
+          <>
+            <p> {rewardData.selectedScores.map(s => s.label).join(', ')}</p>
+            <p>{rewardData.rewardAmountCondition}</p>
+          </>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -136,7 +179,8 @@ const Milestone = () => {
             </AccordionSummary>
 
             <AccordionDetails className="accordion-body">
-              <div style={{ display: 'flex', flexDirection: 'column', border: '1px solid #ccc', padding: 10 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', borderRadius: '8px',
+                 border: '1px solid #EFF2F5', padding: '25px 20px',boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
                 {addForms.map((form) => (
                   <React.Fragment key={form.id}>{form.component}</React.Fragment>
                 ))}
@@ -148,10 +192,10 @@ const Milestone = () => {
                     border: '1px solid #C6FFEC',
                     padding: '5px',
                     textAlign: 'center',
-                    backgroundColor: '#C6FFEC'
+                    backgroundColor: '#C6FFEC',
                   }}
                 >
-                  <Button variant='plain' color='primary' onClick={handleAdd}>
+                  <Button variant='plain' color='primary' onClick={handleAdd} style={{padding:'5px 15px'}}>
                     + Add AND Condition
                   </Button>
                 </div>
@@ -162,37 +206,39 @@ const Milestone = () => {
                   margin: '10px',
                   width: '20%',
                   borderRadius: '25px',
-                  border: '1px solid #C6FFEC',
+                  // border: '1px solid ',
                   padding: '5px ',
                   textAlign: 'center',
-                  backgroundColor: 'lightblue'
+                  backgroundColor: '#E6EEFF'
                 }}
               >
                 <Button variant='plain' color='primary' onClick={""}>
                   + Add OR Condition
                 </Button>
               </div>
-              {showInput && (
-                <Input
-                  className="my-class"
-                  label="Field label"
-                  onBlur={function noRefCheck() { }}
-                  onChange={function noRefCheck() { }}
-                  onFocus={function noRefCheck() { }}
-                  onKeyPress={function noRefCheck() { }}
-                  placeholder="Placeholder Text"
-                />
-              )}
+              <div className="edit-option" >
+                 <Button variant='plain' color='primary' onClick={() => console.log('button click')}>
+               <div className="edit">   
+                 <img src={editImg} alt="plan image" className="box-image" />
+               
+                    Edit Condition
+               </div>
+                  </Button>{' '}
+                  &nbsp;
+             </div>
+             
 
               <div className="reward-btn">
-                <Button variant='fill' color='primary' onClick={handleAddReward} style={{ backgroundColor: '#007bff', color: 'white' }}>
+                <Button variant='fill' color='primary' onClick={handleAddReward} style={{ backgroundColor: '#007bff', color: 'white',marginBottom:'10px' }}>
                   + Add a reward
                 </Button>
               </div>
 
               {showRewardForm && (
+              
                 <div className="reward-section">
                   <h3 style={{ marginBottom: '15px' }}>Adding Rewards</h3>
+                  <div className="reward-form">
                   <div className="participants">
                     <Dropdown
                       isMulti={true}
@@ -228,7 +274,7 @@ const Milestone = () => {
                       </div>
                       <div className="check-box">
                         <CheckboxGroup direction='column'>
-                          <Checkbox label='cap-reward' onChange={handleCheckboxChange} />
+                          <Checkbox label='Cap-reward' onChange={handleCheckboxChange} />
                         </CheckboxGroup>
                         {showPlaceholderInput && (
                           <Input
@@ -243,6 +289,7 @@ const Milestone = () => {
                       </div>
                     </>
                   )}
+                  
 
                   {rewardType === 'scores' && (
                     <>
@@ -268,7 +315,9 @@ const Milestone = () => {
                           placeholder="Placeholder Text"
                         />
                       </div>
+                      
                     </>
+                  
                   )}
 
                   {rewardType === 'badges' && (
@@ -285,26 +334,50 @@ const Milestone = () => {
                       </div>
                     </>
                   )}
+                  </div>
 
                   <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px', color: 'white' }}>
                     <Button
                       variant='fill'
                       color='primary'
                       style={{ backgroundColor: '#007bff' }}
-                      onClick={function noRefCheck() { }}
-                      disabled={isSaveButtonDisabled()} 
+                      onClick={handleSave}
+                      disabled={isSaveButtonDisabled()}
                     >
                       Save
                     </Button>
                   </div>
                 </div>
               )}
+
+          <div style={{ display: "flex", gap: "20px" }}>
+              {savedRewards.map((rewardData, index) => renderBadge(rewardData, index))}
+              </div>
+
             </AccordionDetails>
           </Accordion>
         </div>
+       
       </div>
+
       <Footer />
+      <style >{`
+        .badge {
+          display: flex;
+          flex-direction: row;
+          border: 1px solid #ccc;
+          border-radius: 20px;
+          padding: 8px 12px 8px 12px; 
+          margin: 10px 0;
+          background-color: #f9f9f9;
+          gap:4px;
+          height: 40px;
+          width: fit-content;
+        }
+      `}</style>
+     
     </>
+    
   );
 };
 

@@ -35,7 +35,9 @@ function ParticipantsGroupForm({
     group, 
     setGroup, 
     setIsManualFiles, 
-    setIsAutomaticDropdownSelected  
+    setIsAutomaticDropdownSelected,
+    isFormComplete,
+    setIsFormComplete
 }) {
     const [showAutomaticallyForm, setShowAutomaticallyForm] = useState(true);
     const [files, setFiles] = useState([]);
@@ -61,6 +63,20 @@ function ParticipantsGroupForm({
         }
     }, [conditions, setIsAutomaticDropdownSelected]);
 
+    useEffect(() => {
+        checkFormCompletion();
+    }, [group, showAutomaticallyForm, files]);
+
+    const checkFormCompletion = () => {
+        if (
+            group.groupName &&
+            (showAutomaticallyForm ? conditions.length > 0 : files.length > 0)
+        ) {
+            setIsFormComplete(true);
+        } else {
+            setIsFormComplete(false);
+        }
+    };
 
     const handleRadioChange = (e) => {
         setShowAutomaticallyForm(e.target.value === "Automatically");
@@ -142,7 +158,7 @@ function ParticipantsGroupForm({
                     <div>
                         {files && files.length ? (
                             files.map((file, index) => (
-                                <div className='dropzone'key={file.path}>
+                                <div className='dropzone' key={file.path}>
                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                         <div style={{ display: 'flex', alignItems: 'center' }}>
                                             <div style={{ marginRight: '10px', backgroundColor: '#DEFFE7', width: '50px', height: '50px' }}></div>

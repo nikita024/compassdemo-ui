@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Input from '@empuls/dsm/core/input/Input';
 import Dropdown from '@empuls/dsm/core/dropdown/Dropdown';
 import FlagImg from "../assets/images/flag.png";
@@ -16,6 +16,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
+import PlanGroupDropdown from '../components/PlanGroupDropdown';
+import { Textarea } from '@empuls/dsm';
+
 
 function Plan() {
 
@@ -36,6 +39,8 @@ function Plan() {
     const [isManualFiles, setIsManualFiles] = useState(false);
     const [isAutomaticDropdownSelected, setIsAutomaticDropdownSelected] = useState(false);
     const [newPlanGroupName, setNewPlanGroupName] = useState('');
+    const [isFormComplete, setIsFormComplete] = useState(false);
+   
     const [dropdownOptions, setDropdownOptions] = useState([
         { value: 'Theresa Webb', label: 'Theresa Webb' },
         { value: 'Bessie Cooper', label: 'Bessie Cooper' },
@@ -137,6 +142,14 @@ function Plan() {
         return isValid;
     };
 
+    const handleSave = () => {
+        if (validateForm()) {
+            setIsModalOpen(false);
+        }
+    }
+
+    
+
     const validateModalForm = () => {
         let isValid = true;
        
@@ -144,7 +157,7 @@ function Plan() {
         if (!planGroupName) {
             toast.error('The Plan Group Name field is required.');
             isValid = false;
-        } else if (!value) {
+        }  else if (!value) {
             toast.error('The Date Range field is required.');
             isValid = false;
         } else if (showApprovalForm && selectedApprovers.length === 0) {
@@ -168,6 +181,8 @@ function Plan() {
         setSelectedApprovers(data);
     };
 
+    const approverCountLabel = `Add Approvers (${selectedApprovers.length}/3)`;
+
     return (
         <>
             <Navbar name="Creating a Plan" />
@@ -183,10 +198,9 @@ function Plan() {
                     </div>
                     <div className="input-group">
                         <div className="dropdown-container">
-                            <Dropdown
+                             <PlanGroupDropdown
                                 label="Plan Group"
                                 placeholder='Select Option'
-                                isCreatable={true}
                                 onChange={handleDropdownChange}
                                 options={dropdownOptions}
                                 value={dropdownValue}
@@ -233,6 +247,8 @@ function Plan() {
                                                 }}
                                                 setIsManualFiles={setIsManualFiles}
                                                 setIsAutomaticDropdownSelected={setIsAutomaticDropdownSelected}
+                                                isFormComplete={isFormComplete}
+                                                setIsFormComplete={setIsFormComplete}
                                             />
                                             <div className="seperator"></div>
                                         </div>
@@ -264,40 +280,60 @@ function Plan() {
                     </div>
                 </div>
             
-                <Modal isOpen={isModalOpen} onClose={handleCloseModal} size="md" enableOverflow={true}>
-                    <div>
-                        <Typography.H3>Create a Plan Group</Typography.H3>
-                        <Input
-                            className="my-class"
-                            label="Plan Group Name"
-                            placeholder="Please enter the plan group name"
-                            value={newPlanGroupName}
-                            onChange={(e) => setNewPlanGroupName(e.target.value)}
-                            required
-                        />
+                <Modal isOpen={isModalOpen} onClose={handleCloseModal} size="md" enableOverflow={true} >
+                <Typography.H3>Create a Plan Group</Typography.H3>
+                   
+                    <div className="modal-content">
+                       <div className="condition-form">
+                            <div style={{ marginTop: '10px'}}>
+                                <Input
+                                    className="my-class"
+                                    label="Plan Group Name"
+                                    placeholder="Please enter the plan group name"
+                                    value={newPlanGroupName}
+                                    onChange={(e) => setNewPlanGroupName(e.target.value)}
+                                    required
+                                />
+                            </div>
 
-                        <div style={{ marginTop: '10px', width: '100%'}}>
+                            <div style={{ marginTop: '10px'}}>
+                                <Textarea
+                                    className="my-class"
+                                    label="Plan Group Description"
+                                    placeholder="Please enter the plan group description"
+                                    onBlur={function noRefCheck(){}}
+                                    onChange={function noRefCheck(){}}
+                                    onFocus={function noRefCheck(){}}
+                                    onKeyPress={function noRefCheck(){}}
+                                    limit={100}
+                                    required
+                                />
+                            </div>
+                       </div>
+
+                        <div style={{ marginTop: '10px' }}>
                             <DateRangePicker 
                                 label='Start date-End date' 
                                 placeholder='Please Select Start and End Date' 
                                 onChange={setValue} 
                                 value={value} 
                                 required 
-                                style={{ width: '100%' }}
                             />
+                        </div>
 
+                        <div style={{ marginTop: '20px'}}>
                             <RadioGroup direction='row' onChange={handleApprovalChange} style={{ marginTop: '10px' }}>
                                 <Radio value='approve-automatically' label='Approve Automatically ' name='r' defaultChecked />
                                 <Radio value='select-approvers' label='Select Approvers' name='r' />
                             </RadioGroup>
-
+                        
                             {showApprovalForm && ( 
                                 <div style={{ marginTop: '10px', marginBottom: '10px' }}>
                                     <Dropdown 
                                         isMulti={true} 
                                         isCreatable 
                                         placeholder='You can choose up to 3 approvers' 
-                                        label='Add Approvers (0/3)' 
+                                        label={approverCountLabel} 
                                         options={[
                                             { value: 'Theresa Webb', label: 'Theresa Webb' },
                                             { value: 'Bessie Cooper', label: 'Bessie Cooper' },
@@ -310,14 +346,15 @@ function Plan() {
                                 </div>
                             )}
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0px' }}>
+
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
                             <Button onClick={handleCloseModal} variant='outlined'>Cancel</Button>
                             <Button ml={2} onClick={handleSaveModal}>Save</Button>
                         </div>
                     </div>
                 </Modal>
             </div>
-            <Footer isMilestoneSelected={selectedPlanType === 'milestone'} isManualFiles={isManualFiles} isRadioSelected={isRadioSelected} validateForm={validateForm} />
+            <Footer isMilestoneSelected={selectedPlanType === 'milestone'} isManualFiles={isManualFiles} isRadioSelected={isRadioSelected} isFormComplete={isFormComplete} validateForm={validateForm} />
             <ToastContainer />
         </>
     );
