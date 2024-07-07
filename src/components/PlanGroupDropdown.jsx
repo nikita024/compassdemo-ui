@@ -18,7 +18,7 @@ const customStyles = {
 
 const PlanGroupDropdown = ({ options, value, onChange, placeholder, label }) => (
     <div>
-        <label>{label}</label>
+        <label style={{ color: 'black',fontSize: '12px',color:'#041A2F', }}>{label}</label>
         <Select
             styles={customStyles}
             options={options}

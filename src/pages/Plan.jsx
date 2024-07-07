@@ -17,7 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import PlanGroupDropdown from '../components/PlanGroupDropdown';
-import { Textarea } from '@empuls/dsm';
+import { Label, Textarea } from '@empuls/dsm';
 
 
 function Plan() {
@@ -40,6 +40,7 @@ function Plan() {
     const [isAutomaticDropdownSelected, setIsAutomaticDropdownSelected] = useState(false);
     const [newPlanGroupName, setNewPlanGroupName] = useState('');
     const [isFormComplete, setIsFormComplete] = useState(false);
+    const [selectedRadio, setSelectedRadio] = useState(null); 
    
     const [dropdownOptions, setDropdownOptions] = useState([
         { value: 'Theresa Webb', label: 'Theresa Webb' },
@@ -51,6 +52,7 @@ function Plan() {
     ]);
 
     const handleRadioChange = (e) => {
+        setSelectedRadio(e.target.value); 
         if (e.target.value === "createGroup") {
             setShowParticipantsForm(true);
         } else {
@@ -199,7 +201,7 @@ function Plan() {
                     <div className="input-group">
                         <div className="dropdown-container">
                              <PlanGroupDropdown
-                                label="Plan Group"
+                                label="Plan Group*"
                                 placeholder='Select Option'
                                 onChange={handleDropdownChange}
                                 options={dropdownOptions}
@@ -354,7 +356,14 @@ function Plan() {
                     </div>
                 </Modal>
             </div>
-            <Footer isMilestoneSelected={selectedPlanType === 'milestone'} isManualFiles={isManualFiles} isRadioSelected={isRadioSelected} isFormComplete={isFormComplete} validateForm={validateForm} />
+            <Footer 
+                isMilestoneSelected={selectedPlanType === 'milestone'} 
+                isManualFiles={isManualFiles} 
+                isRadioSelected={isRadioSelected} 
+                isFormComplete={isFormComplete} 
+                validateForm={validateForm} 
+                isIncludeEveryoneSelected={selectedRadio === 'includeEveryone'} 
+            />
             <ToastContainer />
         </>
     );

@@ -1,7 +1,7 @@
 import { Button } from '@empuls/dsm';
 
 
-const Footer = ({ isMilestoneSelected, isRadioSelected, validateForm, isManualFiles, isFormComplete }) => {
+const Footer = ({ isMilestoneSelected, isRadioSelected, validateForm, isManualFiles, isFormComplete ,isIncludeEveryoneSelected }) => {
 
     return (
         <div className="footer">
@@ -14,7 +14,8 @@ const Footer = ({ isMilestoneSelected, isRadioSelected, validateForm, isManualFi
                 <Button variant='outlined' className="button" onClick={function noRefCheck() {}}>
                     Save to Draft
                 </Button>
-                <Button className="button" disabled={!isMilestoneSelected || !isRadioSelected || isManualFiles || !isFormComplete } onClick={validateForm} >
+                <Button className="button" disabled={!isMilestoneSelected || !isRadioSelected || isManualFiles ||
+                     (!isFormComplete &&!isIncludeEveryoneSelected )} onClick={validateForm} >
                     Next
                 </Button>
             </div>

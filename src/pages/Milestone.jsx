@@ -12,6 +12,7 @@ import Radio, { RadioGroup } from '@empuls/dsm/core/radio/Radio';
 import { Checkbox, CheckboxGroup } from '@empuls/dsm';
 import Footer from '../components/Footer';
 import editImg from '../assets/images/Edit.svg';
+import { Edit20Regular } from '@fluentui/react-icons';
 
 const rewardDropdownOptions = [
   { value: 'Theresa Webb', label: 'Theresa Webb' },
@@ -32,6 +33,14 @@ const Milestone = () => {
   const [selectedBadge, setSelectedBadge] = useState([]);
   const [selectedScores, setSelectedScores] = useState([]);
   const [savedRewards, setSavedRewards] = useState([]);
+
+  const [milestoneText, setMilestoneText] = useState('Milestone');
+  const [editMode, setEditMode] = useState(false);
+  const [newMilestoneText, setNewMilestoneText] = useState('');
+
+  const [milestoneDesc, setMilestoneDesc] = useState('');
+  const [editModeDesc, setEditModeDesc] = useState(false);
+  const [newMilestoneDesc, setNewMilestoneDesc] = useState('');
 
   const handleButtonClick = () => {
     setShowInput(!showInput);
@@ -131,236 +140,346 @@ const Milestone = () => {
     );
   };
 
+  const handleEditClick = (e) => {
+    e.stopPropagation();
+    setEditMode(true);
+  };
+
+  const handleEditSave = (e) => {
+    e.stopPropagation();
+    setMilestoneText(newMilestoneText);
+    setEditMode(false);
+  };
+
+  const handleEditCancel = (e) => {
+    e.stopPropagation();
+    setEditMode(false);
+    setNewMilestoneText(milestoneText);
+  };
+
+  const handleEditDescClick = (e) => {
+    e.stopPropagation(); 
+    setEditModeDesc(true);
+  };
+
+  const handleEditDescSave = (e) => {
+    e.stopPropagation();
+    setMilestoneDesc(newMilestoneDesc);
+    setEditModeDesc(false);
+  };
+
+  const handleEditDescCancel = (e) => {
+    e.stopPropagation();
+    setEditModeDesc(false);
+    setNewMilestoneDesc(milestoneDesc);
+  };
+
   return (
     <>
       <div className="milestone-container" style={{ marginBottom: "100px", paddingBottom: "100px" }}>
         <Navbar name="Create Milestones" back={"/"} />
 
         <div className="accordion-container" style={{ marginBottom: "200px" }}>
-          <Accordion className="accordion-item">
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1-content"
-              id="panel1-header"
-              className="accordion-header"
-            >
-              {" SDR Commission Pool >= 20 & < 40"}
-            </AccordionSummary>
-            <AccordionDetails className="accordion-body">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-              malesuada lacus ex, sit amet blandit leo lobortis eget.
-            </AccordionDetails>
-          </Accordion>
-          <Accordion className="accordion-item">
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2-content"
-              id="panel2-header"
-              className="accordion-header"
-            >
-              {" SDR Commission Pool >= 40 & < 50"}
-            </AccordionSummary>
-            <AccordionDetails className="accordion-body">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-              malesuada lacus ex, sit amet blandit leo lobortis eget.
-            </AccordionDetails>
-          </Accordion>
+          <div style={{ margin: "15px 0px" }}>
+            <Accordion className="accordion-item" style={{ width: "96%", margin: "auto" }}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1-content"
+                id="panel1-header"
+                className="accordion-header"
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div className='accordion-number'>1</div>
+                  <div style={{ fontSize: '16px' }}>{" SDR Commission Pool < 20"}</div>
+                </div>
+               </AccordionSummary>
 
-          <Accordion defaultExpanded className="accordion-item">
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel3-content"
-              id="panel3-header"
-              className="accordion-header"
-            >
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span>Milestone</span>
-              </div>
-            </AccordionSummary>
 
-            <AccordionDetails className="accordion-body">
-              <div style={{ display: 'flex', flexDirection: 'column', borderRadius: '8px',
-                 border: '1px solid #EFF2F5', padding: '25px 20px',boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
-                {addForms.map((form) => (
-                  <React.Fragment key={form.id}>{form.component}</React.Fragment>
-                ))}
+              <AccordionDetails className="accordion-body">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                malesuada lacus ex, sit amet blandit leo lobortis eget.
+              </AccordionDetails>
+            </Accordion>
+          </div>
+
+          <div style={{ margin: "15px 0px" }}>
+            <Accordion className="accordion-item" style={{ width: "96%", margin: "auto" }}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel2-content"
+                id="panel2-header"
+                className="accordion-header"
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div className='accordion-number'>2</div>
+                  <div style={{ fontSize: '16px' }}>{" SDR Commission Pool >= 40 & < 50"}</div>
+                </div>
+              </AccordionSummary>
+              <AccordionDetails className="accordion-body">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                malesuada lacus ex, sit amet blandit leo lobortis eget.
+              </AccordionDetails>
+            </Accordion>
+          </div>
+
+          <div style={{ margin: "15px 0px" }}>
+            <Accordion defaultExpanded className="accordion-item" style={{ width: "96%", margin: "auto" }}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel3-content"
+                id="panel3-header"
+                className="accordion-header"
+              >
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div className='accordion-number'>3</div>
+                  <div>
+                  {editMode ? (
+                    <AccordionDetails className="accordion-body" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
+                      <div style={{ width: '100%' }}>
+                        <Input
+                          value={newMilestoneText}
+                          onChange={(e) => setNewMilestoneText(e.target.value)}
+                          placeholder="Enter new milestone text"
+                          // limit={50}
+                          required
+                          // style={{ minWidth: '1000px' }}
+                        />
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', }}>
+                        <Button variant='outlined' color='primary' onClick={(e) => handleEditSave(e)} style={{ marginRight: '10px' }}>
+                          Save
+                        </Button>
+                        <Button variant='outlined' color='error' onClick={(e) => handleEditCancel(e)}>
+                          Cancel
+                        </Button>
+                      </div>
+                    </AccordionDetails>
+                  ) : (
+                    <div style={{ fontSize: '16px' }}>{milestoneText}</div>
+                  )}
+                  </div>
+                  {!editMode && <Edit20Regular style={{ cursor: 'pointer' }}  onClick={(e) => handleEditClick(e)} />}
+                </div>
+
+                <div>
+                  {editModeDesc ? (
+                     <AccordionDetails className="accordion-body" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
+                      <div style={{ width: '100%' }}>
+                        <Input
+                          value={newMilestoneDesc}
+                          onChange={(e) => setNewMilestoneDesc(e.target.value)}
+                          placeholder="Enter new milestone description"
+                          // limit={50}
+                          required
+                          // style={{ minWidth: '1000px' }}
+                        />
+                      </div>
+                     <div style={{ display: 'flex', justifyContent: 'flex-end', }}>
+                       <Button variant='outlined' color='primary' onClick={(e) => handleEditDescSave(e)} style={{ marginRight: '10px' }}>
+                         Save
+                       </Button>
+                       <Button variant='outlined' color='error' onClick={(e) => handleEditDescCancel(e)}>
+                         Cancel
+                       </Button>
+                     </div>
+                   </AccordionDetails>
+                  ) : (
+                    <div style={{ marginLeft: '30px', fontSize: '16px', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: `${milestoneDesc ? '10px' : '0'}` }}>
+                      <div style={{ fontWeight: '500' }}>{milestoneDesc}</div>
+                      <div onClick={(e) => handleEditDescClick(e)} style={{ color: '#246EF6', fontSize: '14px' }}>
+                        {milestoneDesc ? 'Edit description' : 'Add description'}
+                      </div>
+                    </div>
+                  )}
+                </div>
+                </div>
+              </AccordionSummary>
+              <div className="accordion-divider" style={{border:'1px solid #EFF2F5',marginBottom:'5px'}}></div>
+
+              <AccordionDetails className="accordion-body">
+                <div style={{ display: 'flex', flexDirection: 'column', borderRadius: '8px',
+                  border: '1px solid #EFF2F5', padding: '25px 20px',boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
+                  {addForms.map((form) => (
+                    <React.Fragment key={form.id}>{form.component}</React.Fragment>
+                  ))}
+
+                
+
+                  <div
+                    style={{
+                      width: '20%',
+                      borderRadius: '25px',
+                      border: '1px solid #C6FFEC',
+                      padding: '5px',
+                      textAlign: 'center',
+                      backgroundColor: '#C6FFEC',
+                    }}
+                  >
+                    <Button variant='plain' color='primary' onClick={handleAdd} style={{padding:'5px 15px'}}>
+                      + Add AND Condition
+                    </Button> 
+                  </div>
+                </div>
 
                 <div
                   style={{
+                    margin: '10px',
                     width: '20%',
                     borderRadius: '25px',
-                    border: '1px solid #C6FFEC',
-                    padding: '5px',
+                    // border: '1px solid ',
+                    padding: '5px ',
                     textAlign: 'center',
-                    backgroundColor: '#C6FFEC',
+                    backgroundColor: '#E6EEFF'
                   }}
                 >
-                  <Button variant='plain' color='primary' onClick={handleAdd} style={{padding:'5px 15px'}}>
-                    + Add AND Condition
+                  <Button variant='plain' color='primary' onClick={""}>
+                    + Add OR Condition
                   </Button>
                 </div>
-              </div>
 
-              <div
-                style={{
-                  margin: '10px',
-                  width: '20%',
-                  borderRadius: '25px',
-                  // border: '1px solid ',
-                  padding: '5px ',
-                  textAlign: 'center',
-                  backgroundColor: '#E6EEFF'
-                }}
-              >
-                <Button variant='plain' color='primary' onClick={""}>
-                  + Add OR Condition
-                </Button>
-              </div>
-              <div className="edit-option" >
-                 <Button variant='plain' color='primary' onClick={() => console.log('button click')}>
-               <div className="edit">   
-                 <img src={editImg} alt="plan image" className="box-image" />
-               
-                    Edit Condition
-               </div>
-                  </Button>{' '}
-                  &nbsp;
-             </div>
-             
-
-              <div className="reward-btn">
-                <Button variant='fill' color='primary' onClick={handleAddReward} style={{ backgroundColor: '#007bff', color: 'white',marginBottom:'10px' }}>
-                  + Add a reward
-                </Button>
-              </div>
-
-              {showRewardForm && (
+                <div className="accordion-divider" style={{border:'1px solid #EFF2F5',margin:'15px'}}></div>
               
-                <div className="reward-section">
-                  <h3 style={{ marginBottom: '15px' }}>Adding Rewards</h3>
-                  <div className="reward-form">
-                  <div className="participants">
-                    <Dropdown
-                      isMulti={true}
-                      isCreatable
-                      placeholder='select options'
-                      label='Participants'
-                      options={rewardDropdownOptions}
-                      onChange={handleParticipantsChange}
-                    />
-                  </div>
+              
+                <div className="reward-btn">
+                   <Button variant='fill' color='primary' onClick={handleAddReward} style={{ backgroundColor: '#007bff', color: 'white' }}>
+                    + Add a reward
+                  </Button>
+                </div>
 
-                  <div style={{ marginBottom: '10px', fontSize: '12px' }}>
-                    Reward Type
-                  </div>
-                  <RadioGroup direction='row' label='Reward Type'>
-                    <Radio label='Points' name='radio' value='points' onChange={handleRewardTypeChange} />
-                    <Radio label='Scores' name='radio' value='scores' onChange={handleRewardTypeChange} />
-                    <Radio label='Badges' name='radio' value='badges' onChange={handleRewardTypeChange} />
-                  </RadioGroup>
+                {showRewardForm && (
+                
+                  <div className="reward-section">
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '15px' , justifyContent: 'space-between'}}>
 
-                  {rewardType === 'points' && (
-                    <>
-                      <div className="reward-text">
-                        <Input
-                          className="my-class"
-                          label="Reward Amount or Condition "
-                          onBlur={function noRefCheck() { }}
-                          onChange={handleRewardAmountConditionChange}
-                          onFocus={function noRefCheck() { }}
-                          onKeyPress={function noRefCheck() { }}
-                          placeholder="Placeholder Text"
-                        />
-                      </div>
-                      <div className="check-box">
-                        <CheckboxGroup direction='column'>
-                          <Checkbox label='Cap-reward' onChange={handleCheckboxChange} />
-                        </CheckboxGroup>
-                        {showPlaceholderInput && (
+                      <h3 style={{marginBottom:'0' }}>Adding Rewards</h3>
+                    
+                </div> 
+                    <div className="reward-form">
+                    <div className="participants">
+                      <Dropdown
+                        isMulti={true}
+                        isCreatable
+                        placeholder='select options'
+                        label='Participants'
+                        options={rewardDropdownOptions}
+                        onChange={handleParticipantsChange}
+                      />
+                    </div>
+
+                    <div style={{ marginBottom: '10px', fontSize: '12px' }}>
+                      Reward Type
+                    </div>
+                    <RadioGroup direction='row' label='Reward Type'>
+                      <Radio label='Points' name='radio' value='points' onChange={handleRewardTypeChange} />
+                      <Radio label='Scores' name='radio' value='scores' onChange={handleRewardTypeChange} />
+                      <Radio label='Badges' name='radio' value='badges' onChange={handleRewardTypeChange} />
+                    </RadioGroup>
+
+                    {rewardType === 'points' && (
+                      <>
+                        <div className="reward-text">
                           <Input
                             className="my-class"
+                            label="Reward Amount or Condition "
                             onBlur={function noRefCheck() { }}
-                            onChange={function noRefCheck() { }}
+                            onChange={handleRewardAmountConditionChange}
                             onFocus={function noRefCheck() { }}
                             onKeyPress={function noRefCheck() { }}
                             placeholder="Placeholder Text"
                           />
-                        )}
-                      </div>
-                    </>
-                  )}
-                  
+                        </div>
+                        <div className="check-box">
+                          <CheckboxGroup direction='column'>
+                            <Checkbox label='Cap-reward' onChange={handleCheckboxChange} />
+                          </CheckboxGroup>
+                          {showPlaceholderInput && (
+                            <Input
+                              className="my-class"
+                              onBlur={function noRefCheck() { }}
+                              onChange={function noRefCheck() { }}
+                              onFocus={function noRefCheck() { }}
+                              onKeyPress={function noRefCheck() { }}
+                              placeholder="Placeholder Text"
+                            />
+                          )}
+                        </div>
+                      </>
+                    )}
+                    
 
-                  {rewardType === 'scores' && (
-                    <>
-                      <div className="score-dropdown">
-                        <Dropdown
-                          isMulti={true}
-                          isCreatable
-                          placeholder='Select Option'
-                          label='Select Score'
-                          options={rewardDropdownOptions}
-                          onChange={handleScoresChange}
-                        />
-                      </div>
+                    {rewardType === 'scores' && (
+                      <>
+                        <div className="score-dropdown">
+                          <Dropdown
+                            isMulti={true}
+                            isCreatable
+                            placeholder='Select Option'
+                            label='Select Score'
+                            options={rewardDropdownOptions}
+                            onChange={handleScoresChange}
+                          />
+                        </div>
 
-                      <div className="reward-text">
-                        <Input
-                          className="my-class"
-                          label="Reward Amount or Condition "
-                          onBlur={function noRefCheck() { }}
-                          onChange={handleRewardAmountConditionChange}
-                          onFocus={function noRefCheck() { }}
-                          onKeyPress={function noRefCheck() { }}
-                          placeholder="Placeholder Text"
-                        />
-                      </div>
-                      
-                    </>
-                  
-                  )}
+                        <div className="reward-text">
+                          <Input
+                            className="my-class"
+                            label="Reward Amount or Condition "
+                            onBlur={function noRefCheck() { }}
+                            onChange={handleRewardAmountConditionChange}
+                            onFocus={function noRefCheck() { }}
+                            onKeyPress={function noRefCheck() { }}
+                            placeholder="Placeholder Text"
+                          />
+                        </div>
+                        
+                      </>
+                    
+                    )}
 
-                  {rewardType === 'badges' && (
-                    <>
-                      <div className="badge-dropdown">
-                        <Dropdown
-                          isMulti={true}
-                          isCreatable
-                          placeholder='Select badge'
-                          label='Select badge'
-                          options={rewardDropdownOptions}
-                          onChange={handleBadgeChange}
-                        />
-                      </div>
-                    </>
-                  )}
+                    {rewardType === 'badges' && (
+                      <>
+                        <div className="badge-dropdown">
+                          <Dropdown
+                            isMulti={true}
+                            isCreatable
+                            placeholder='Select badge'
+                            label='Select badge'
+                            options={rewardDropdownOptions}
+                            onChange={handleBadgeChange}
+                          />
+                        </div>
+                      </>
+                    )}
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px', color: 'white' }}>
+                      <Button
+                        variant='fill'
+                        color='primary'
+                        style={{ backgroundColor: '#007bff' }}
+                        onClick={handleSave}
+                        disabled={isSaveButtonDisabled()}
+                      >
+                        Save
+                      </Button>
+                    </div>
                   </div>
+                )}
 
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px', color: 'white' }}>
-                    <Button
-                      variant='fill'
-                      color='primary'
-                      style={{ backgroundColor: '#007bff' }}
-                      onClick={handleSave}
-                      disabled={isSaveButtonDisabled()}
-                    >
-                      Save
-                    </Button>
-                  </div>
+            <div style={{ display: "flex", gap: "20px" }}>
+                {savedRewards.map((rewardData, index) => renderBadge(rewardData, index))}
                 </div>
-              )}
 
-          <div style={{ display: "flex", gap: "20px" }}>
-              {savedRewards.map((rewardData, index) => renderBadge(rewardData, index))}
-              </div>
-
-            </AccordionDetails>
-          </Accordion>
+              </AccordionDetails>
+            </Accordion>
+          </div>
         </div>
        
       </div>
 
       <Footer />
+
       <style >{`
         .badge {
           display: flex;

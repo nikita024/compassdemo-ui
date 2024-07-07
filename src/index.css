@@ -477,6 +477,7 @@ cursor: 'pointer'  */
     padding:20px;
     /* border:1px solid #ccc; */
     border-radius: 5px;
+   
   } 
   
    /* .save-button {
@@ -593,6 +594,160 @@ cursor: 'pointer'  */
 .edit-option button .edit img {
     margin-right: 4px; 
 }
+
+
+.accordion-number {
+  border-radius: 50%;
+  background-color: #246EF6;
+  padding: 2px 8px;
+  color: #fff;
+}
+
+
+
+/* .mil-form {
+ 
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}  */
+
+.mil-form .dropdown-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width:100%;
+  
+}
+
+.mil-form .dropdown-container .dropdown {
+  width: 500px;
+  
+}
+
+/* .mil-form .dropdown-container .dropdown .dropdown-menu {
+  width: 400px;
+} */
+
+.mil-form .input-container {
+  width: 500px;
+  padding: 16px;
+}
+
+/* .mil-form .input-container .input {
+  width: 100%;
+} */
+
+.mil-form .delete-icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.mil-form .delete-icon-container .delete-icon {
+  color: #246EF6;
+  height: 22px;
+  width: 22px;
+}
+/*  */
+.additional-settings {
+  color:#246EF6;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+
+.setting-container {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  margin-bottom: 10px;
+} 
+
+.setting-title {
+  padding: 20px;
+}
+
+.set-container{
+  border-top: 1px solid #ccc;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.set-container .content {
+  margin: 10px;
+}
+
+.set-container .box-image {
+    display: flex;
+    align-items: center; 
+    margin: 0px 200px;
+}
+
+.dropzone-setting {
+  border: 2px dashed #ccc;
+  background-color: #efefef;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  margin-top: 15px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.plan-theme {
+  color: #041A2F;
+  font-size: 18px;
+  margin: 50px 0px;
+}
+
+.plan-theme-header {
+  width: 70%;
+  margin: auto;
+  padding: 20px 0px;
+}
+
+.plan-theme-card {
+  background-color: #ffffff;
+  width: 70%;
+  margin: auto;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.theme-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px;
+  padding: 50px;
+  
+}
+
+.estimator-card {
+  background-color: #ffffff;
+  width: 70%;
+  margin: auto;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+
+}
+.estimator-condition {
+  margin-bottom: 10px;
+}
+
+
+
+
 
 
 
