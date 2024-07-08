@@ -31,7 +31,27 @@ const dropdownOptions = [
     }
 ];
 
-const AddForm = ({ deleteAddForm }) => {
+const AddForm = ({ 
+    deleteAddForm, 
+    addFormCount,
+    addFormState,
+    setAddFormState 
+}) => {
+
+    const handleDropdownChange = (field, data) => {
+        setAddFormState(prevState => ({
+            ...prevState,
+            [field]: data
+        }));
+    };
+
+    const handleInputChange = (e) => {
+        setAddFormState(prevState => ({
+            ...prevState,
+            value: e.target.value
+        }));
+    };
+
     return (
         <div className="mil-form">
             <div className="dropdown-container">
@@ -45,7 +65,7 @@ const AddForm = ({ deleteAddForm }) => {
                         menuPlacement="bottom"
                         isClearable={false}
                         isMulti={false}
-                        onChange={data => console.log(data)}
+                        onChange={data => handleDropdownChange('condition', data)}
                     />
                 </div>
                 <div className="dropdown" style={{ padding: '21px ' }}>
@@ -57,9 +77,9 @@ const AddForm = ({ deleteAddForm }) => {
                         placeholder="choose Operator"
                         label=""
                         menuPlacement="bottom"
-                        isClearable={false}
+                        isClearable={false} 
                         isMulti={false}
-                        onChange={data => console.log(data)}
+                        onChange={data => handleDropdownChange('operator', data)}
                     />
                     
                 </div>
@@ -67,16 +87,18 @@ const AddForm = ({ deleteAddForm }) => {
                     <Input
                         className="input"
                         label=""
-                         onBlur={function noRefCheck() { }}
-                        onChange={function noRefCheck() { }}
+                        onBlur={function noRefCheck() { }}
                         onFocus={function noRefCheck() { }}
                         onKeyPress={function noRefCheck() { }}
                         placeholder="Enter Value"
+                        onChange={handleInputChange}
                     />
                 </div>
-                <div className="delete-icon-container" onClick={deleteAddForm}>
-                    <Delete20Regular className="delete-icon" />
-                </div>
+                {addFormCount > 1 && (
+                    <div className="delete-icon-container" onClick={deleteAddForm}>
+                        <Delete20Regular className="delete-icon" />
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -3,9 +3,10 @@ import Input from '@empuls/dsm/core/input/Input';
 import { Checkbox, CheckboxGroup } from '@empuls/dsm';
 import { Delete20Regular } from '@fluentui/react-icons';
 import { Button } from '@empuls/dsm';
+import Footer from '../../components/Footer';
 
 const SetupEstimator = () => {
-  const [forms, setForms] = useState([{ id: Date.now(), field: '', condition: '', display: false }]);
+  const [forms, setForms] = useState([{ id: Date.now(), field: 'Field 1', condition: '', display: false }]);
 
   const handleAddForm = () => {
     const newFieldNumber = forms.length + 1;
@@ -25,6 +26,7 @@ const SetupEstimator = () => {
   };
 
   return (
+    <>
     <div className="plan-theme">
       <div className="plan-theme-header">
         <h2 style={{ fontSize: '18px' }}>Setup Estimator</h2>
@@ -34,13 +36,13 @@ const SetupEstimator = () => {
       </div>
 
       <div className="estimator-card">
-        {forms.map(form => (
+        {forms.map((form, index) => (
           <div key={form.id} className="estimator-card-container" style={{ marginBottom: '20px' }}>
             <div style={{ marginBottom: '20px' }}>
               <Input
                 className="my-class"
                 label={form.field}
-                value={form.field}
+                // value={form.field}
                 onBlur={function noRefCheck() {}}
                 onChange={(e) => handleChange(form.id, 'field', e.target.value)}
                 onFocus={function noRefCheck() {}}
@@ -71,7 +73,7 @@ const SetupEstimator = () => {
                     onChange={() => handleChange(form.id, 'display', !form.display)}
                   />
                 </CheckboxGroup>
-                {forms.length > 1 && (
+                {index !== 0 && (
                   <Button variant="plain" color="primary" onClick={() => handleDeleteForm(form.id)}>
                     <Delete20Regular style={{ cursor: 'pointer' }} />
                     Delete
@@ -89,6 +91,20 @@ const SetupEstimator = () => {
         </div>
       </div>
     </div>
+    
+    <div className="footer">
+        <div className="left-buttons">
+        </div>
+        <div className="right-buttons">
+            <Button variant='outlined' className="button" onClick={function noRefCheck() {}}>
+                Cancel
+            </Button>
+            <Button className="button" >
+                Save
+            </Button>
+        </div>
+    </div>
+    </>
   );
 };
 

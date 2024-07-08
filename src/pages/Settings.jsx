@@ -10,6 +10,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 
 const formatFileSize = (size) => {
@@ -45,6 +46,7 @@ const Settings = () => {
     const navigate = useNavigate();
     const [value, setValue] = useState([null, null]);
     const [files, setFiles] = useState([]);
+    const [showAdditionalSettings, setShowAdditionalSettings] = useState(false);
     const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
         onDrop: (acceptedFiles) => {
             setFiles([...files, ...acceptedFiles]);
@@ -69,6 +71,14 @@ const Settings = () => {
 
     const handleFeedbackSurveyClick = () => {
         navigate('/feedback-survey');
+    }
+
+    const handleShowAdditionalSettings = () => {
+        setShowAdditionalSettings(true);
+    }
+
+    const handleHideAdditionalSettings = () => {
+        setShowAdditionalSettings(false);
     }
 
     return (
@@ -170,25 +180,45 @@ const Settings = () => {
                                     required 
                                 />
                             </div>
-                            <div className="additional-settings">
-                                <h5>Show Additional Settings</h5>
-                            </div>
 
-                            <div className="setting-dropdown" style={{ marginTop: '20px' }}>
-                                <Label style={{ color: '#041A2F', fontSize: '14px', fontWeight: '500' }}>Recurrance</Label>
-                                <Dropdown 
-                                    isMulti={true} 
-                                    isCreatable 
-                                    placeholder='Select Option' 
-                                    options={dropdownOptions}    
-                                />
-                            </div>
-                            <div className="setting-checkbox" style={{ marginTop: '20px' }}>
-                                <CheckboxGroup direction='column'>
-                                    <Checkbox label='this program will be hidden' />
-                                    <Checkbox label='Make this a cascading program.' />
-                                </CheckboxGroup>
-                            </div>
+                            {!showAdditionalSettings ? (
+                                <div 
+                                    className="additional-settings"
+                                    onClick={handleShowAdditionalSettings}
+                                >
+                                    <h5>Show Additional Settings</h5>
+                                </div>
+                            ) : null}
+
+                            {showAdditionalSettings ? (
+                                <div 
+                                    className="additional-settings"
+                                    onClick={handleHideAdditionalSettings}
+                                >
+                                    <h5>Hide Additional Settings</h5>
+                                </div>
+                            ) : null}
+                            
+                            {showAdditionalSettings ? (
+                              <>
+                                <div className="setting-dropdown" style={{ marginTop: '20px' }}>
+                                    <Label style={{ color: '#041A2F', fontSize: '14px', fontWeight: '500' }}>Recurrance</Label>
+                                    <Dropdown 
+                                        isMulti={true} 
+                                        isCreatable 
+                                        placeholder='Select Option' 
+                                        options={dropdownOptions}    
+                                    />
+                                </div>
+                                <div className="setting-checkbox" style={{ marginTop: '20px' }}>
+                                    <CheckboxGroup direction='column'>
+                                        <Checkbox label='this program will be hidden' />
+                                        <Checkbox label='Make this a cascading program.' />
+                                    </CheckboxGroup>
+                                </div>
+                              </>  
+                            ) : null}
+                            
                         </div>
                        <div className="box-image">
                             <img src={mobileimg} alt="plan image" />
@@ -196,9 +226,9 @@ const Settings = () => {
                     </div>
                 </div>
 
-                <div className="accordion-container">
+                <div className="accordion-container" style={{ marginBottom: "50px" }}>
                     <div style={{ margin: "15px 0px" }}>
-                        <Accordion className="accordion-item" style={{ width: "97%", margin: "auto" }}>
+                        <Accordion className="accordion-item" style={{ width: "98%", margin: "auto" }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1-content"
@@ -363,7 +393,7 @@ const Settings = () => {
                                                 fontSize: "14px",
                                                 fontWeight: "500",
                                                 color: "#246EF6F6",
-                                                cursor: "cursor",
+                                                cursor: "pointer",
                                             }}
                                             onClick={handleSetupEstimatorClick} 
                                         >Create an Estimator</div>
@@ -379,6 +409,7 @@ const Settings = () => {
                 </div>
 
             </div>
+            <Footer />
         </>
     );
 }
