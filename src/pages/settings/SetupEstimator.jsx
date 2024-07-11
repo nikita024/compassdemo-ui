@@ -14,7 +14,7 @@ const SetupEstimator = () => {
   };
 
   const handleDeleteForm = (id) => {
-    // Prevent deleting the first form
+
     if (forms.length === 1) {
       return;
     }
@@ -30,7 +30,7 @@ const SetupEstimator = () => {
     <div className="plan-theme">
       <div className="plan-theme-header">
         <h2 style={{ fontSize: '18px' }}>Setup Estimator</h2>
-        <p style={{ fontSize: '14px' }}>
+        <p style={{ fontSize: '16px' }}>
           Enter the User Inputs if you want to set up an Estimator for this plan and define the relationship between the User Inputs and the Metrics.
         </p>
       </div>

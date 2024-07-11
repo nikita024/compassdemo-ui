@@ -705,7 +705,7 @@ cursor: 'pointer'  */
 .plan-theme {
   color: #041A2F;
   font-size: 18px;
-  margin: 50px 0px;
+  margin: 20px 0px;
 }
 
 .plan-theme-header {
@@ -744,6 +744,51 @@ cursor: 'pointer'  */
 .estimator-condition {
   margin-bottom: 10px;
 }
+
+ .survey-card {
+  background-color: #ffffff;
+  width: 70%;
+  margin: auto;
+  padding: 40px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.survey-card-container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.input-field {
+  display: flex;
+  align-items: center;
+}
+
+.input-field img {
+  width: 24px;
+  height: auto;
+}
+
+.surver-Add {
+  display: flex;
+  float: right;
+  margin-bottom: 10px;
+}
+
+.border-line {
+  border-bottom: 1px solid #CFD7E2;
+  margin-top: 70px;
+}
+
+.inline-container{
+ justify-content: space-between;
+}
+
+
+
+
 
 
 

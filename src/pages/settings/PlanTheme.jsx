@@ -12,7 +12,7 @@ const PlanTheme = () => {
       <div className="plan-theme" style={{ marginBottom: "50px"}}>
          <div className="plan-theme-header">
             <h2 style={{"fontSize": "18px"}}>Plan Themes</h2>
-            <p style={{"fontSize": "14px"}}>Themes customize your plan with different visuals. Change themes even while plan is running.</p>
+            <p style={{"fontSize": "16px"}}>Themes customize your plan with different visuals. Change themes even while plan is running.</p>
          </div>
 
          <div className="plan-theme-card">
