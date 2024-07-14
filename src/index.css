@@ -787,6 +787,23 @@ cursor: 'pointer'  */
 }
 
 
+.metric-card {
+  background-color: #ffffff;
+  width: 70%;
+  margin: auto;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card{
+  border: 1px solid  #FFC899;
+  background-color: #FFF1E5;
+  padding:30px;
+  border-radius: 5px;
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 
 
 

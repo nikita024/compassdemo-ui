@@ -4,14 +4,20 @@ import EditImg from '../../assets/images/Delete.svg';
 import Button from '@empuls/dsm/core/button/Button';
 import Dropdown from '@empuls/dsm/core/dropdown/Dropdown';
 import { Delete20Regular } from '@fluentui/react-icons';
+import { useNavigate } from 'react-router-dom';
 
 const FeedbackSurvey = () => {
+  const navigate = useNavigate();
   const [questions, setQuestions] = useState([{ id: 1, placeholder: 'Placeholder Text', value: '' }]);
   const [questionCount, setQuestionCount] = useState(1);
 
   useEffect(() => {
     console.log("questions", questions);
   }, [questions]);
+
+  const handleSave = () => {
+    navigate('/settings');
+  };
 
   const addQuestion = () => {
     const newQuestionCount = questionCount + 1;
@@ -140,10 +146,17 @@ const FeedbackSurvey = () => {
         <div className="left-buttons">
         </div>
         <div className="right-buttons">
-            <Button variant='outlined' className="button" onClick={function noRefCheck() {}}>
+            <Button 
+              variant='outlined' 
+              className="button" 
+              onClick={handleSave}
+            >
                 Cancel
             </Button>
-            <Button className="button" >
+            <Button 
+              className="button"
+              onClick={handleSave} 
+            >
                 Save
             </Button>
         </div>

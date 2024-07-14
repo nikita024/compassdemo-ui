@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Navbar from '../components/Navbar';
-import { Checkbox, Dropdown, Input, CheckboxGroup, Label } from '@empuls/dsm';
+import { Checkbox, Dropdown, Input, CheckboxGroup, Label, Button } from '@empuls/dsm';
 import DateRangePicker from '@empuls/dsm/core/date-picker/DateRangePicker';
 import mobileimg from '../assets/images/mobileImg.svg';
 import Accordion from '@mui/material/Accordion';
@@ -53,6 +53,11 @@ const Settings = () => {
         }
     });
 
+    const [programDescription, setProgramDescription] = useState('');
+    const [rewardingBufferTime, setRewardingBufferTime] = useState('');
+    const [transactionDate, setTransactionDate] = useState([]);
+    const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false);
+
     const handleFileCancel = (index) => {
         setFiles(files.filter((file, i) => i !== index));
     };
@@ -80,6 +85,20 @@ const Settings = () => {
     const handleHideAdditionalSettings = () => {
         setShowAdditionalSettings(false);
     }
+
+    const validateForm = () => {
+       console.log("validateForm")
+    }
+
+    useEffect(() => {
+        const isFormValid = files.length > 0 &&
+            programDescription !== '' &&
+            value[0] !== null &&
+            value[1] !== null &&
+            rewardingBufferTime !== '' &&
+            transactionDate.length > 0;
+        setIsNextButtonEnabled(isFormValid);
+    }, [files, programDescription, value, rewardingBufferTime, transactionDate]);
 
     return (
         <>
@@ -136,7 +155,7 @@ const Settings = () => {
                                 <Input
                                     className="my-class"
                                     onBlur={function noRefCheck() { }}
-                                    onChange={function noRefCheck() { }}
+                                    onChange={(e) => setProgramDescription(e.target.value)}
                                     onFocus={function noRefCheck() { }}
                                     onKeyPress={function noRefCheck() { }}
                                     placeholder="Placeholder Text"
@@ -160,7 +179,7 @@ const Settings = () => {
                                         <Input
                                             className="my-class"
                                             onBlur={function noRefCheck() { }}
-                                            onChange={function noRefCheck() { }}
+                                            onChange={(e) => setRewardingBufferTime(e.target.value)}
                                             onFocus={function noRefCheck() { }}
                                             onKeyPress={function noRefCheck() { }}
                                             placeholder="0"
@@ -177,6 +196,7 @@ const Settings = () => {
                                     isCreatable 
                                     placeholder='Select Option' 
                                     options={dropdownOptions}
+                                    onChange={(selected) => setTransactionDate(selected)}
                                     required 
                                 />
                             </div>
@@ -410,6 +430,25 @@ const Settings = () => {
 
             </div>
             <Footer />
+            <div className="footer">
+            <div className="left-buttons">
+                <Button variant='plain' className="button" onClick={function noRefCheck() {}}>
+                    Cancel
+                </Button>
+            </div>
+            <div className="right-buttons">
+                <Button variant='outlined' className="button" onClick={function noRefCheck() {}}>
+                    Save to Draft
+                </Button>
+                <Button 
+                    className="button" 
+                    disabled={!isNextButtonEnabled} 
+                    onClick={validateForm} 
+                >
+                    Next
+                </Button>
+            </div>
+        </div>
         </>
     );
 }

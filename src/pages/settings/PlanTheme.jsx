@@ -1,12 +1,32 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import MansionImg from "../../assets/images/mansion.svg";
 import SalesmanImg from "../../assets/images/salesman.svg";
 import HikingImg from "../../assets/images/hiking.svg";
 import CarCollectorImg from "../../assets/images/car-collector.svg";
 import NewThemeImg from "../../assets/images/new-theme.svg";
-import { Button } from '@empuls/dsm';
+import { Button, Input, Label, Modal, Typography } from '@empuls/dsm';
+import { useNavigate } from 'react-router-dom';
+import manImg from '../../assets/images/man.svg';
+import collectImg from '../../assets/images/collect.svg';
+import hikeImg from '../../assets/images/hike.svg';
+import salesImg from '../../assets/images/sales.svg';
+import mainImg from '../../assets/images/mainframe.svg';
 
 const PlanTheme = () => {
+   const navigate = useNavigate();
+   const [isOpen, setIsOpen] = useState(false);
+   const [themeName, setThemeName] = useState('');
+   const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(false);
+
+   const handleSave = () => {
+      navigate('/settings');
+   };
+
+   useEffect(() => {
+      const isFormValid = themeName !== '';
+      setIsSaveButtonDisabled(isFormValid);
+   }, [themeName]);
+
   return (
    <>
       <div className="plan-theme" style={{ marginBottom: "50px"}}>
@@ -35,7 +55,12 @@ const PlanTheme = () => {
                   <img src={CarCollectorImg} alt="Car Collector" />
                </div>
 
-               <div className='theme-card'>
+               <div 
+                  className='theme-card'
+                  onClick={() => {
+                     setIsOpen(true);
+                     }} 
+               >
                   <img src={NewThemeImg} alt="NewTheme" style={{ marginTop: "30px" }} />
                </div>
             </div>
@@ -46,14 +71,110 @@ const PlanTheme = () => {
         <div className="left-buttons">
         </div>
         <div className="right-buttons">
-            <Button variant='outlined' className="button" onClick={function noRefCheck() {}}>
+            <Button 
+               variant='outlined' 
+               className="button" 
+               onClick={handleSave}
+            >
                 Cancel
             </Button>
-            <Button className="button" >
+            <Button 
+               className="button"  
+               onClick={handleSave}
+            >
                 Save
             </Button>
         </div>
       </div>
+      <Modal 
+         isOpen={isOpen} 
+         onClose={() => {
+            setIsOpen(false);
+         }} 
+         
+         padding={false} 
+         disableCloseButton={false} 
+         transitionDirection='left'
+         width='550px'
+         height='100%'
+         style={{
+            position: 'fixed',
+            top: 0,
+            right: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflowY: 'auto',
+            overflowX: 'hidden',
+         }}
+      >
+         <Modal.Header>
+            <Typography 
+               variant='h3' 
+               component='h3'
+               style={{ color: '#000' }}
+            >
+               Create Theme
+               </Typography>
+         </Modal.Header>
+         <Modal.Body>
+            <div style={{ width: '100%' }}>
+               <div>
+                  <Label style={{ color: '#041A2F', fontSize: '14px', fontWeight: '500' }}>Theme Name*</Label>
+                  <Input
+                     className="my-class"
+                     onBlur={function noRefCheck() { }}
+                     onChange={(e) => setThemeName(e.target.value)}
+                     onFocus={function noRefCheck() { }}
+                     onKeyPress={function noRefCheck() { }}
+                     placeholder="Placeholder Text"
+                     required
+                  />
+               </div>
+               
+               <p style={{ color: '#394960', fontSize: '14px', marginTop: '20px' }}>Select Background</p>
+                <div className="theme-img" style={{ marginTop: '20px',display: 'flex', gap:'20px'}}>
+                  <img src={manImg} alt="theme" />
+                  <img src={salesImg} alt="theme" />
+                  <img src={collectImg} alt="theme" />
+                  <img src={hikeImg} alt="theme" />
+               </div>
+                   <p style={{ color: '#394960', fontSize: '14px', marginTop: '20px' }}>Images must be in .PNG or .JPG format and 150 x 150px in size</p>
+
+                <div className="main-frame">
+                        <img src={mainImg} alt="theme" />
+                  </div>   
+
+            </div>
+         </Modal.Body>
+         <Modal.Footer
+            style={{
+               position: "relative",
+            }}
+         >
+            <div style={{
+               textAlign: 'right'
+            }}>
+               <Button 
+                  variant='outlined'
+                  onClick={() => {
+                     setIsOpen(false);
+                  }} 
+               >
+                  Cancel
+               </Button>
+               <Button 
+                  ml={2}
+                  disabled={!isSaveButtonDisabled}
+                  onClick={() => {
+                     setIsOpen(false);
+                  }} 
+               >
+                  Submit
+               </Button>
+            </div>
+         </Modal.Footer>
+      </Modal>
    </>
    
   )

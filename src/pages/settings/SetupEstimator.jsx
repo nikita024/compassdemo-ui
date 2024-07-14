@@ -4,8 +4,10 @@ import { Checkbox, CheckboxGroup } from '@empuls/dsm';
 import { Delete20Regular } from '@fluentui/react-icons';
 import { Button } from '@empuls/dsm';
 import Footer from '../../components/Footer';
+import { useNavigate } from 'react-router-dom';
 
 const SetupEstimator = () => {
+  const navigate = useNavigate();
   const [forms, setForms] = useState([{ id: Date.now(), field: 'Field 1', condition: '', display: false }]);
 
   const handleAddForm = () => {
@@ -23,6 +25,10 @@ const SetupEstimator = () => {
 
   const handleChange = (id, field, value) => {
     setForms(forms.map(form => (form.id === id ? { ...form, [field]: value } : form)));
+  };
+
+  const handleSave = () => {
+    navigate('/settings');
   };
 
   return (
@@ -96,10 +102,17 @@ const SetupEstimator = () => {
         <div className="left-buttons">
         </div>
         <div className="right-buttons">
-            <Button variant='outlined' className="button" onClick={function noRefCheck() {}}>
+            <Button 
+              variant='outlined' 
+              className="button" 
+              onClick={handleSave}
+            >
                 Cancel
             </Button>
-            <Button className="button" >
+            <Button 
+              className="button"
+              onClick={handleSave} 
+            >
                 Save
             </Button>
         </div>
