@@ -794,6 +794,7 @@ cursor: 'pointer'  */
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
 }
 
 .card{
@@ -802,6 +803,21 @@ cursor: 'pointer'  */
   padding:30px;
   border-radius: 5px;
  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-header{
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #CFD7E2;
+  padding:16px
+}
+
+.table-row{
+  display: flex;
+  justify-content: flex-start;
+  border: 1px solid #CFD7E2;
+  padding:16px;
+
 }
 
 
