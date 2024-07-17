@@ -12,7 +12,7 @@ import hikeImg from '../../assets/images/hike.svg';
 import salesImg from '../../assets/images/sales.svg';
 import mainImg from '../../assets/images/mainframe.svg';
 
-const PlanTheme = () => {
+const PlanTheme = ({ isPlanThemeOpen, setIsPlanThemeOpen }) => {
    const navigate = useNavigate();
    const [isOpen, setIsOpen] = useState(false);
    const [themeName, setThemeName] = useState('');
@@ -20,7 +20,8 @@ const PlanTheme = () => {
    const [selectedTheme, setSelectedTheme] = useState(null);
 
    const handleSave = () => {
-      navigate('/settings');
+    //   navigate('/settings');
+      setIsPlanThemeOpen(false);
    };
 
    useEffect(() => {
@@ -33,7 +34,16 @@ const PlanTheme = () => {
    };
 
    return (
-      <>
+      <Modal 
+        isOpen={isPlanThemeOpen} 
+        onClose={() => {
+            setIsPlanThemeOpen(false);
+        }} 
+        fullScreen
+        padding={false} 
+        disableCloseButton={false} 
+        transitionDirection='up'
+      >
          <div className="plan-theme" style={{ marginBottom: "50px"}}>
             <div className="plan-theme-header">
                <h2 style={{"fontSize": "18px"}}>Plan Themes</h2>
@@ -187,7 +197,7 @@ const PlanTheme = () => {
                </div>
             </Modal.Footer>
          </Modal>
-      </>
+      </Modal>
    );
 };
 

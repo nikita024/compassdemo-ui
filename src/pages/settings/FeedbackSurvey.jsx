@@ -5,24 +5,42 @@ import Button from '@empuls/dsm/core/button/Button';
 import Dropdown from '@empuls/dsm/core/dropdown/Dropdown';
 import { Delete20Regular } from '@fluentui/react-icons';
 import { useNavigate } from 'react-router-dom';
+import { Modal } from '@empuls/dsm';
 
-const FeedbackSurvey = () => {
+const FeedbackSurvey = ({ isFeedBackSurveyOpen, setIsFeedBackSurveyOpen }) => {
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([{ id: 1, placeholder: 'Placeholder Text', value: '' }]);
   const [questionCount, setQuestionCount] = useState(1);
+  const [whenToSendSurvey, setWhenToSendSurvey] = useState([]);
+  const [activityScore, setActivityScore] = useState('');
+  const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
     console.log("questions", questions);
-  }, [questions]);
+    validateForm();
+  }, [questions, whenToSendSurvey, activityScore]);
+
+  const validateForm = () => {
+   
+    const allQuestionsFilled = questions.every(q => q.value.trim() !== '');
+   
+    const dropdownFilled = whenToSendSurvey.length > 0;
+   
+    const activityScoreFilled = activityScore.trim() !== '';
+
+   
+    setIsFormValid(allQuestionsFilled && dropdownFilled && activityScoreFilled);
+  };
 
   const handleSave = () => {
-    navigate('/settings');
+    // navigate('/settings');
+    setIsFeedBackSurveyOpen(false);
   };
 
   const addQuestion = () => {
     const newQuestionCount = questionCount + 1;
     setQuestionCount(newQuestionCount);
-    const newQuestions = [...questions, { id: newQuestionCount, placeholder: 'Placeholder Text',  value: '' }];
+    const newQuestions = [...questions, { id: newQuestionCount, placeholder: 'Placeholder Text', value: '' }];
     setQuestions(newQuestions);
   };
 
@@ -38,8 +56,25 @@ const FeedbackSurvey = () => {
     setQuestions(updatedQuestions);
   };
 
+  const handleDropdownChange = (selectedOptions) => {
+    setWhenToSendSurvey(selectedOptions.map(option => option.value));
+  };
+
+  const handleActivityScoreChange = (event) => {
+    setActivityScore(event.target.value);
+  };
+
   return (
-    <>
+    <Modal
+      isOpen={isFeedBackSurveyOpen} 
+      onClose={() => {
+        setIsFeedBackSurveyOpen(false);
+      }} 
+      fullScreen
+      padding={false} 
+      disableCloseButton={false} 
+      transitionDirection='up'
+    >
       <div className="plan-theme">
         <div className="plan-theme-header">
           <h2 style={{ fontSize: '18px' }}>Add Feedback Survey</h2>
@@ -50,7 +85,7 @@ const FeedbackSurvey = () => {
       </div>
 
       <div className="survey-card">
-      {questions.map((question, index) => (
+        {questions.map((question, index) => (
           <div className="survey-card-container" key={question.id}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <div style={{ width: '3%', padding: "2px", marginRight: '10px' }}>
@@ -125,6 +160,7 @@ const FeedbackSurvey = () => {
                 { value: 'Leslie Alexander', label: 'Leslie Alexander' },
               ]}
               required
+              onChange={handleDropdownChange}
             />
           </div>
           <div style={{ width: '50%' }}>
@@ -133,10 +169,11 @@ const FeedbackSurvey = () => {
               style={{ width: '100%' }}
               label="Activity Score"
               onBlur={() => {}}
-              onChange={() => {}}
+              onChange={handleActivityScoreChange}
               onFocus={() => {}}
               onKeyPress={() => {}}
               placeholder="Placeholder Text"
+              value={activityScore}
             />
           </div>
         </div>
@@ -146,22 +183,23 @@ const FeedbackSurvey = () => {
         <div className="left-buttons">
         </div>
         <div className="right-buttons">
-            <Button 
-              variant='outlined' 
-              className="button" 
-              onClick={handleSave}
-            >
-                Cancel
-            </Button>
-            <Button 
-              className="button"
-              onClick={handleSave} 
-            >
-                Save
-            </Button>
+          <Button 
+            variant='outlined' 
+            className="button" 
+            onClick={handleSave}
+          >
+              Cancel
+          </Button>
+          <Button 
+            className="button"
+            onClick={handleSave} 
+            disabled={!isFormValid} 
+          >
+              Save
+          </Button>
         </div>
       </div>
-    </>
+    </Modal>
   );
 };
 

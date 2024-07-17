@@ -11,6 +11,10 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
+import PlanTheme from './settings/PlanTheme';
+import FeedbackSurvey from './settings/FeedbackSurvey';
+import SetupEstimator from './settings/SetupEstimator';
+import MetricSetting from './settings/MetricSetting';
 
 
 const formatFileSize = (size) => {
@@ -57,25 +61,33 @@ const Settings = () => {
     const [rewardingBufferTime, setRewardingBufferTime] = useState('');
     const [transactionDate, setTransactionDate] = useState([]);
     const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false);
+    const [isPlanThemeOpen, setIsPlanThemeOpen] = useState(false);
+    const [isFeedBackSurveyOpen, setIsFeedBackSurveyOpen] = useState(false);
+    const [isMetricSettingOpen, setIsMetricSettingOpen] = useState(false);
+    const [isSetupEstimatorOpen, setIsSetupEstimatorOpen] = useState(false);
 
     const handleFileCancel = (index) => {
         setFiles(files.filter((file, i) => i !== index));
     };
 
     const handlePlanThemeClick = () => {
-        navigate('/plan-theme');
+        // navigate('/plan-theme');
+        setIsPlanThemeOpen(true);
     }
 
     const handleMetricSettingClick = () => {
-        navigate('/metric-settings');
+        // navigate('/metric-settings');
+        setIsMetricSettingOpen(true);
     }
 
     const handleSetupEstimatorClick = () => {
-        navigate('/setup-estimator');
+        // navigate('/setup-estimator');
+        setIsSetupEstimatorOpen(true);
     }
 
     const handleFeedbackSurveyClick = () => {
-        navigate('/feedback-survey');
+        // navigate('/feedback-survey');
+        setIsFeedBackSurveyOpen(true);
     }
 
     const handleShowAdditionalSettings = () => {
@@ -103,7 +115,7 @@ const Settings = () => {
     return (
         <>
             <div className="milestone-container">
-                <Navbar name="Settings" back={"/"} />
+                <Navbar name="Settings" back={"/milestone"} />
                 <div className="setting-container">
                     <h1 className='setting-title'>Setup Plan</h1>
                     
@@ -449,6 +461,34 @@ const Settings = () => {
                 </Button>
             </div>
         </div>
+
+        {isPlanThemeOpen ? (
+            <PlanTheme
+                isPlanThemeOpen={isPlanThemeOpen}
+                setIsPlanThemeOpen={setIsPlanThemeOpen}
+            />
+        ) : null}
+
+        {isFeedBackSurveyOpen ? (
+            <FeedbackSurvey
+                isFeedBackSurveyOpen={isFeedBackSurveyOpen}
+                setIsFeedBackSurveyOpen={setIsFeedBackSurveyOpen}
+            />
+        ) : null}
+
+        {isSetupEstimatorOpen ? (
+            <SetupEstimator
+                isSetupEstimatorOpen={isSetupEstimatorOpen}
+                setIsSetupEstimatorOpen={setIsSetupEstimatorOpen}
+            />
+        ) : null}
+
+        {isMetricSettingOpen ? (
+            <MetricSetting
+                isMetricSettingOpen={isMetricSettingOpen}
+                setIsMetricSettingOpen={setIsMetricSettingOpen}
+            />
+        ) : null}
         </>
     );
 }

@@ -1,13 +1,31 @@
-import { Input, TabItem } from '@empuls/dsm';
+import { Input, Modal, TabItem } from '@empuls/dsm';
 import Tab from '@empuls/dsm/core/tab/Tab';
 import React from 'react';
 import UnionImg from '../../assets/images/Union.svg';
 import { Checkbox, CheckboxGroup } from '@empuls/dsm';
 import Button from '@empuls/dsm/core/button/Button';
 
-const MetricSetting = () => {
+const MetricSetting = ({ isMetricSettingOpen, setIsMetricSettingOpen }) => {
+
+  const handleClose = () => {
+    setIsMetricSettingOpen(false);
+  };
+
+  const handleSave = () => {
+    setIsMetricSettingOpen(false);
+  };
+
   return (
-    <>
+    <Modal
+      isOpen={isMetricSettingOpen} 
+      onClose={() => {
+        setIsMetricSettingOpen(false);
+      }} 
+      fullScreen
+      padding={false} 
+      disableCloseButton={false} 
+      transitionDirection='up'
+    >
       <div className="plan-theme" style={{ marginBottom: "13px" }}>
         <div className="plan-theme-header">
           <h2 style={{ fontSize: "18px" }}>Metrics Settings</h2>
@@ -40,13 +58,13 @@ const MetricSetting = () => {
           </div>
         </div>
 
-        {/* Table */}
+      
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead style={{ "backgroundColor": "#F6F7F9" }}>
             <tr style={{ borderBottom: '1px solid #CFD7E2' }}>
               <th style={{ color: 'black', textAlign: 'left', padding: '10px' }}>Metric Name</th>
               <th style={{ color: 'black', textAlign: 'left', padding: '10px' }}>Target Value</th>
-              <th style={{ color: 'black', textAlign: 'left', padding: '10px' }}>Visible</th>
+              <th style={{ color: 'black', textAlign: 'right', padding: '10px' }}>Visible</th>
             </tr>
           </thead>
           <tbody>
@@ -58,7 +76,7 @@ const MetricSetting = () => {
               <td style={{ padding: '10px',"width":"10%" }}>
                 <Input placeholder='0' />
               </td>
-              <td style={{ padding: '10px' }}>
+              <td style={{ padding: '20px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                 <CheckboxGroup direction='column'>
                   <Checkbox />
                 </CheckboxGroup>
@@ -72,7 +90,7 @@ const MetricSetting = () => {
               <td style={{ padding: '10px',"width":"20%" }}>
                 <Input placeholder='0' />
               </td>
-              <td style={{ padding: '10px' }}>
+              <td style={{ padding: '20px' ,display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
                 <CheckboxGroup direction='column'>
                   <Checkbox />
                 </CheckboxGroup>
@@ -87,7 +105,7 @@ const MetricSetting = () => {
               <td style={{ padding: '10px',"width":"20%" }}>
                 <Input placeholder='0' />
               </td>
-              <td style={{ padding: '10px' }}>
+              <td style={{ padding: '20px',display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                 <CheckboxGroup direction='column'>
                   <Checkbox />
                 </CheckboxGroup>
@@ -102,7 +120,7 @@ const MetricSetting = () => {
               <td style={{ padding: '10px',"width":"20%" }}>
                 <Input placeholder='0' />
               </td>
-              <td style={{ padding: '10px' }}>
+              <td style={{ padding: '20px',display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                 <CheckboxGroup direction='column'>
                   <Checkbox />
                 </CheckboxGroup>
@@ -117,7 +135,7 @@ const MetricSetting = () => {
               <td style={{ padding: '10px',"width":"20%" }}>
                 <Input placeholder='0' />
               </td>
-              <td style={{ padding: '10px' }}>
+              <td style={{ padding: '20px' ,display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
                 <CheckboxGroup direction='column'>
                   <Checkbox />
                 </CheckboxGroup>
@@ -128,7 +146,7 @@ const MetricSetting = () => {
       </div>
 
       <div>
-        jhbjhb
+     dcfvdfb
       </div>
 
       <div className="footer">
@@ -138,19 +156,19 @@ const MetricSetting = () => {
             <Button 
               variant='outlined' 
               className="button" 
-             
+              onClick={handleClose}
             >
                 Cancel
             </Button>
             <Button 
               className="button"
-             
+              onClick={handleSave}
             >
                 Save
             </Button>
         </div>
       </div>
- </>
+    </Modal>
            
        
   );

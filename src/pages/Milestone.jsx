@@ -228,7 +228,7 @@ const Milestone = () => {
                         />
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'flex-end', }}>
-                        <Button variant='outlined' color='primary' onClick={(e) => handleEditSave(e)} style={{ marginRight: '10px' }}>
+                        <Button variant='outlined' color='primary' onClick={(e) => handleEditSave(e)} style={{ marginRight: '10px', }}>
                           Save
                         </Button>
                         <Button variant='outlined' color='error' onClick={(e) => handleEditCancel(e)}>
@@ -380,7 +380,7 @@ const Milestone = () => {
         
           {savedRewards.length === 0 ? (
             <div className="reward-btn">
-                <Button variant='fill' color='primary' onClick={handleAddReward} style={{ backgroundColor: '#007bff', color: 'white' }}>
+                <Button variant='fill' color='primary' onClick={handleAddReward} style={{ backgroundColor: '#007bff', color: 'white', textTransform: 'capitalize' }}>
                 + Add a reward
               </Button>
             </div>
@@ -491,7 +491,7 @@ const Milestone = () => {
                 )}
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px', color: 'white' }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px', color: 'white', }}>
                   <Button
                     variant='fill'
                     color='primary'
@@ -511,7 +511,7 @@ const Milestone = () => {
 
             {savedRewards && savedRewards.length > 0 && (
               <div className="reward-btn">
-                <Button variant='fill' color='primary' onClick={handleAddReward} style={{ backgroundColor: '#007bff', color: 'white' }}>
+                <Button variant='fill' color='primary' onClick={handleAddReward} style={{ backgroundColor: '#007bff', color: 'white', textTransform: 'capitalize' }}>
                   + Add another reward
                 </Button>
               </div>
@@ -532,8 +532,8 @@ const Milestone = () => {
         {[...Array(accordionCount)].map((_, index) =>  renderAccordion(index + 1))}
 
         <div style={{ marginTop: '10px', marginRight: '35px', textAlign: 'right' }}>
-            <Button variant='outlined' color='primary' onClick={() => setAccordionCount(accordionCount + 1)}>
-                + Add {accordionCount + 1} Accordion
+            <Button variant='outlined' color='primary' onClick={() => setAccordionCount(accordionCount + 1)} style={{ textTransform: 'capitalize'}}>
+                + Add {accordionCount + 1} milestone
             </Button>
         </div>
           

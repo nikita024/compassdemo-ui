@@ -5,10 +5,10 @@ import Plan from './pages/Plan.jsx'
 // import Footer from './components/Footer.jsx'
 import Milestone from './pages/Milestone.jsx'
 import Settings from './pages/Settings.jsx';
-import FeedbackSurvey from './pages/settings/FeedbackSurvey.jsx';
-import PlanTheme from './pages/settings/PlanTheme.jsx';
-import MetricSetting from './pages/settings/MetricSetting.jsx';
-import SetupEstimator from './pages/settings/SetupEstimator.jsx';
+// import FeedbackSurvey from './pages/settings/FeedbackSurvey.jsx';
+// import PlanTheme from './pages/settings/PlanTheme.jsx';
+// import MetricSetting from './pages/settings/MetricSetting.jsx';
+// import SetupEstimator from './pages/settings/SetupEstimator.jsx';
 
 
 
@@ -39,22 +39,22 @@ const router = createBrowserRouter([
         path:"/settings",
         element:<Settings />
       },
-      {
-        path: "/plan-theme",
-        element: <PlanTheme />,
-      },
-      {
-        path: "metric-settings",
-        element: <MetricSetting />,
-      },
-      {
-        path: "/feedback-survey",
-        element: <FeedbackSurvey />,
-      },
-      {
-        path: "/setup-estimator",
-        element: <SetupEstimator />,
-      },
+      // {
+      //   path: "/plan-theme",
+      //   element: <PlanTheme />,
+      // },
+      // {
+      //   path: "metric-settings",
+      //   element: <MetricSetting />,
+      // },
+      // {
+      //   path: "/feedback-survey",
+      //   element: <FeedbackSurvey />,
+      // },
+      // {
+      //   path: "/setup-estimator",
+      //   element: <SetupEstimator />,
+      // },
      
     ]
   }

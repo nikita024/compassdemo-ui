@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import Input from '@empuls/dsm/core/input/Input';
-import { Checkbox, CheckboxGroup } from '@empuls/dsm';
+import { Checkbox, CheckboxGroup, Modal } from '@empuls/dsm';
 import { Delete20Regular } from '@fluentui/react-icons';
 import { Button } from '@empuls/dsm';
 import Footer from '../../components/Footer';
 import { useNavigate } from 'react-router-dom';
 
-const SetupEstimator = () => {
+const SetupEstimator = ({ isSetupEstimatorOpen, setIsSetupEstimatorOpen }) => {
   const navigate = useNavigate();
   const [forms, setForms] = useState([{ id: Date.now(), field: 'Field 1', condition: '', display: false }]);
 
@@ -28,11 +28,21 @@ const SetupEstimator = () => {
   };
 
   const handleSave = () => {
-    navigate('/settings');
+    // navigate('/settings');
+    setIsSetupEstimatorOpen(false);
   };
 
   return (
-    <>
+    <Modal
+      isOpen={isSetupEstimatorOpen} 
+      onClose={() => {
+        setIsSetupEstimatorOpen(false);
+      }} 
+      fullScreen
+      padding={false} 
+      disableCloseButton={false} 
+      transitionDirection='up'
+    >
     <div className="plan-theme">
       <div className="plan-theme-header">
         <h2 style={{ fontSize: '18px' }}>Setup Estimator</h2>
@@ -47,7 +57,7 @@ const SetupEstimator = () => {
             <div style={{ marginBottom: '20px' }}>
               <Input
                 className="my-class"
-                label={form.field}
+                label={"Field " + (index + 1)}
                 // value={form.field}
                 onBlur={function noRefCheck() {}}
                 onChange={(e) => handleChange(form.id, 'field', e.target.value)}
@@ -117,7 +127,7 @@ const SetupEstimator = () => {
             </Button>
         </div>
     </div>
-    </>
+    </Modal>
   );
 };
 

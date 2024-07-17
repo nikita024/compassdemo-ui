@@ -19,7 +19,6 @@ import { useNavigate } from 'react-router-dom';
 import PlanGroupDropdown from '../components/PlanGroupDropdown';
 import { Label, Textarea } from '@empuls/dsm';
 
-
 function Plan() {
 
     const navigate = useNavigate();
@@ -39,9 +38,9 @@ function Plan() {
     const [isManualFiles, setIsManualFiles] = useState(false);
     const [isAutomaticDropdownSelected, setIsAutomaticDropdownSelected] = useState(false);
     const [newPlanGroupName, setNewPlanGroupName] = useState('');
+    const [newPlanGroupDescription, setNewPlanGroupDescription] = useState('');
     const [isFormComplete, setIsFormComplete] = useState(false);
     const [selectedRadio, setSelectedRadio] = useState(null); 
-   
     const [dropdownOptions, setDropdownOptions] = useState([
         { value: 'Theresa Webb', label: 'Theresa Webb' },
         { value: 'Bessie Cooper', label: 'Bessie Cooper' },
@@ -95,7 +94,6 @@ function Plan() {
         setParticipantGroups([...participantGroups, { groupName: '', isManualFiles: false, isAutomaticDropdownSelected: false }]);
     };
 
-
     const deleteGroup = (index) => {
         const newGroups = [...participantGroups];
         newGroups.splice(index, 1);
@@ -144,20 +142,14 @@ function Plan() {
         return isValid;
     };
 
-    const handleSave = () => {
-        if (validateForm()) {
-            setIsModalOpen(false);
-        }
-    }
-
-    
-
     const validateModalForm = () => {
         let isValid = true;
-       
-        const planGroupName = document.querySelector('input[placeholder="Please enter the plan group name"]').value;
-        if (!planGroupName) {
+
+        if (!newPlanGroupName) {
             toast.error('The Plan Group Name field is required.');
+            isValid = false;
+        } else if (!newPlanGroupDescription) {
+            toast.error('The Plan Group Description field is required.');
             isValid = false;
         }  else if (!value) {
             toast.error('The Date Range field is required.');
@@ -165,16 +157,16 @@ function Plan() {
         } else if (showApprovalForm && selectedApprovers.length === 0) {
             toast.error('At least one approver must be selected.');
             isValid = false;
-        } else {
-            return isValid;
-        }
+        } 
+
+        return isValid;
     };
 
     const handleSaveModal = () => {
         if (validateModalForm()) {
             const newOption = { value: newPlanGroupName, label: newPlanGroupName };
             // setDropdownOptions([...dropdownOptions, newOption]);
-            setDropdownValue(newOption);  
+            setDropdownValue(newOption);
             setIsModalOpen(false);
         }
     };
@@ -283,10 +275,9 @@ function Plan() {
                 </div>
             
                 <Modal isOpen={isModalOpen} onClose={handleCloseModal} size="md" enableOverflow={true} >
-                <Typography.H3>Create a Plan Group</Typography.H3>
-                   
+                    <Typography.H3>Create a Plan Group</Typography.H3>
                     <div className="modal-content">
-                       <div className="condition-form">
+                        <div className="condition-form">
                             <div style={{ marginTop: '10px'}}>
                                 <Input
                                     className="my-class"
@@ -297,22 +288,20 @@ function Plan() {
                                     required
                                 />
                             </div>
-
                             <div style={{ marginTop: '10px'}}>
                                 <Textarea
                                     className="my-class"
                                     label="Plan Group Description"
                                     placeholder="Please enter the plan group description"
-                                    onBlur={function noRefCheck(){}}
-                                    onChange={function noRefCheck(){}}
+                                    value={newPlanGroupDescription}
+                                    onChange={(e)=> setNewPlanGroupDescription(e.target.value)}
                                     onFocus={function noRefCheck(){}}
                                     onKeyPress={function noRefCheck(){}}
                                     limit={100}
                                     required
                                 />
                             </div>
-                       </div>
-
+                        </div>
                         <div style={{ marginTop: '10px' }}>
                             <DateRangePicker 
                                 label='Start date-End date' 
@@ -322,13 +311,11 @@ function Plan() {
                                 required 
                             />
                         </div>
-
                         <div style={{ marginTop: '20px'}}>
                             <RadioGroup direction='row' onChange={handleApprovalChange} style={{ marginTop: '10px' }}>
                                 <Radio value='approve-automatically' label='Approve Automatically ' name='r' defaultChecked />
                                 <Radio value='select-approvers' label='Select Approvers' name='r' />
                             </RadioGroup>
-                        
                             {showApprovalForm && ( 
                                 <div style={{ marginTop: '10px', marginBottom: '10px' }}>
                                     <Dropdown 
@@ -348,7 +335,6 @@ function Plan() {
                                 </div>
                             )}
                         </div>
-
                         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
                             <Button onClick={handleCloseModal} variant='outlined'>Cancel</Button>
                             <Button ml={2} onClick={handleSaveModal}>Save</Button>
