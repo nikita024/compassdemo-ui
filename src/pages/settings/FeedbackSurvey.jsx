@@ -88,7 +88,7 @@ const FeedbackSurvey = ({ isFeedBackSurveyOpen, setIsFeedBackSurveyOpen }) => {
         {questions.map((question, index) => (
           <div className="survey-card-container" key={question.id}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <div style={{ width: '3%', padding: "2px", marginRight: '10px' }}>
+              <div style={{ width: '3%', padding: "-2px", marginRight: '10px' }}>
                 <div style={{ borderRadius: '50%', backgroundColor: "#246EF6", padding: '2px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>{index + 1}</div>
               </div>
               <div style={{ width: '100%' }}>
