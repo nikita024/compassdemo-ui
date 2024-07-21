@@ -1,17 +1,31 @@
 import React, { useState } from 'react';
-import { Input, Modal, TabItem } from '@empuls/dsm';
+import { Input, Modal, TabItem, Typography } from '@empuls/dsm';
 import Tab from '@empuls/dsm/core/tab/Tab';
 import UnionImg from '../../assets/images/Union.svg';
 import { Checkbox, CheckboxGroup } from '@empuls/dsm';
 import Button from '@empuls/dsm/core/button/Button';
 import Dropdown from '@empuls/dsm/core/dropdown/Dropdown';
 import DelImg from '../../assets/images/Del.svg';
+import ManageColumnModal from '../../components/ManageColumnModal';
 
-
+const dropdownOptions = (
+  [
+    { value: 'Theresa Webb', label: 'Theresa Webb' },
+    { value: 'Bessie Cooper', label: 'Bessie Cooper' },
+    { value: 'Dianne Russell', label: 'Dianne Russell' },
+    { value: 'Brooklyn Simmons', label: 'Brooklyn Simmons' },
+    { value: 'Leslie Alexander', label: 'Leslie Alexander' },
+  ]
+);
 
 const MetricSetting = ({ isMetricSettingOpen, setIsMetricSettingOpen }) => {
   
   const [selectedMetric, setSelectedMetric] = useState('task');
+  const [SelectedColumn, setSelectedColumn] = useState('health-active-target');
+  const [isOpen, setIsOpen] = useState(false); 
+  const [rows, setRows] = useState([
+    { id: Date.now(), rowNumber: 1 },
+  ]);
 
   const handleClose = () => {
     setIsMetricSettingOpen(false);
@@ -23,6 +37,22 @@ const MetricSetting = ({ isMetricSettingOpen, setIsMetricSettingOpen }) => {
 
   const handleChipClick = (metric) => {
     setSelectedMetric(metric);
+  };
+ 
+  const handleColumnClick = (column) => {
+    setSelectedColumn(column);
+  };
+
+  const handleAddRow = () => {
+    if (rows.length >= 5) {
+      alert('You can only add up to 5 rows.');
+      return;
+    }
+    setRows([...rows, { id: Date.now(), rowNumber: rows.length + 1 }]);
+  };
+
+  const handleDeleteRow = (id) => {
+    setRows(rows.filter(row => row.id !== id));
   };
 
   return (
@@ -365,7 +395,9 @@ const MetricSetting = ({ isMetricSettingOpen, setIsMetricSettingOpen }) => {
                     A maximum of 5 rows and 5 columns can be added.
                 </p>
               </div>
-              <div>
+
+              {rows.map((row, index) => (
+              <div key={row.id}>
                   <div
                     style={{
                       display: 'flex',
@@ -378,15 +410,19 @@ const MetricSetting = ({ isMetricSettingOpen, setIsMetricSettingOpen }) => {
                     }}
                   >
                     
-                    <div style={{ color: '#394960', fontWeight: 'bold', marginLeft: '25px' }}>Row 1</div>
+                    <div style={{ color: '#394960', fontWeight: 'bold', marginLeft: '25px' }}>Row {index + 1}</div>
                     <div className="delete" style={{"display":"flex", alignItems:"center"}}>
                       <img src={DelImg} alt="metric"  />
-                      <Button variant='plain' color='primary' onClick={() => console.log('button click')}>
+                      <Button 
+                        variant='plain' 
+                        color='primary' 
+                        onClick={() => handleDeleteRow(row.id)}
+                        disabled={rows.length === 1}  
+                      >
                           Delete
                       </Button>{' '}
                   </div>
                   </div>
-
                   <div
                     style={{
                       display: 'flex',
@@ -398,124 +434,60 @@ const MetricSetting = ({ isMetricSettingOpen, setIsMetricSettingOpen }) => {
                     }} 
                   > 
                    <div className="dropdown-container1" style={{width:'100%'}}>
-                   <Dropdown placeholder='Select Option' isCreatable={true} onChange={data => console.log(data)}  options={[{
-                        value: 'Theresa Webb',
-                        label: 'Theresa Webb'
-                      }, {
-                        value: 'Bessie Cooper',
-                        label: 'Bessie Cooper'
-                      }, {
-                        value: 'Dianne Russell',
-                        label: 'Dianne Russell'
-                      }, {
-                        value: 'Brooklyn Simmons',
-                        label: 'Brooklyn Simmons'
-                      }, {
-                        value: 'Leslie Alexander',
-                        label: 'Leslie Alexander'
-                      }]} />
+                   <Dropdown placeholder='Select Option' isCreatable={true} onChange={data => console.log(data)}  options={dropdownOptions} />
                       </div>
 
                       <div className="dropdown-container2" style={{width:'100%'}}>
-                    <Dropdown placeholder='Select Option' isCreatable={true} onChange={data => console.log(data)} options={[{
-                        value: 'Theresa Webb',
-                        label: 'Theresa Webb'
-                      }, {
-                        value: 'Bessie Cooper',
-                        label: 'Bessie Cooper'
-                      }, {
-                        value: 'Dianne Russell',
-                        label: 'Dianne Russell'
-                      }, {
-                        value: 'Brooklyn Simmons',
-                        label: 'Brooklyn Simmons'
-                      }, {
-                        value: 'Leslie Alexander',
-                        label: 'Leslie Alexander'
-                      }]} />
-
-                      </div>
+                    <Dropdown placeholder='Select Option' isCreatable={true} onChange={data => console.log(data)} options={dropdownOptions}
+                    />
+                      </div>  
                     
                       <div className="dropdown-container3"  style={{width:'100%'}}>
-                    <Dropdown placeholder='Select Option' isCreatable={true} onChange={data => console.log(data)} options={[{
-                        value: 'Theresa Webb',
-                        label: 'Theresa Webb'
-                      }, {
-                        value: 'Bessie Cooper',
-                        label: 'Bessie Cooper'
-                      }, {
-                        value: 'Dianne Russell',
-                        label: 'Dianne Russell'
-                      }, {
-                        value: 'Brooklyn Simmons',
-                        label: 'Brooklyn Simmons'
-                      }, {
-                        value: 'Leslie Alexander',
-                        label: 'Leslie Alexander'
-                      }]} />
+                    <Dropdown placeholder='Select Option' isCreatable={true} onChange={data => console.log(data)} options={dropdownOptions} />
 
                       </div>
 
                     <div className="dropdown-container4"  style={{width:'100%'}}>
-                    <Dropdown placeholder='Select Option' isCreatable={true} onChange={data => console.log(data)} options={[{
-                        value: 'Theresa Webb',
-                        label: 'Theresa Webb'
-                      }, {
-                        value: 'Bessie Cooper',
-                        label: 'Bessie Cooper'
-                      }, {
-                        value: 'Dianne Russell',
-                        label: 'Dianne Russell'
-                      }, {
-                        value: 'Brooklyn Simmons',
-                        label: 'Brooklyn Simmons'
-                      }, {
-                        value: 'Leslie Alexander',
-                        label: 'Leslie Alexander'
-                      }]} />
+                    <Dropdown placeholder='Select Option' isCreatable={true} onChange={data => console.log(data)} options={dropdownOptions} />
 
                       </div>
                      
 
                     <div className="dropdown-container5"  style={{width:'100%'}}>
-                    <Dropdown placeholder='Select Option' isCreatable={true} onChange={data => console.log(data)} options={[{
-                        value: 'Theresa Webb',
-                        label: 'Theresa Webb'
-                      }, {
-                        value: 'Bessie Cooper',
-                        label: 'Bessie Cooper'
-                      }, {
-                        value: 'Dianne Russell',
-                        label: 'Dianne Russell'
-                      }, {
-                        value: 'Brooklyn Simmons',
-                        label: 'Brooklyn Simmons'
-                      }, {
-                        value: 'Leslie Alexander',
-                        label: 'Leslie Alexander'
-                      }]} />
+                    <Dropdown placeholder='Select Option' isCreatable={true} onChange={data => console.log(data)} options={dropdownOptions} />
                   </div>
               </div>
-              <div
-                    style={{
-                      display: 'flex',
-                      gap: '20px',
-                      marginLeft: '685px',
-                   
-                      }}
+              {index === rows.length - 1 && (
+                <div
+                style={{
+                  display: 'flex',
+                  gap: '20px',
+                  marginLeft: '685px',
+                
+                  }}
+              >
+                <div className="manage-column" style={{width:'100%'}}>
+                  <Button 
+                    variant='plain' 
+                    color='primary' 
+                    onClick={() => {
+                      setIsOpen(true);
+                    }} 
                   >
-                    <div className="manage-column" style={{width:'100%'}}>
-                      <Button variant='plain' color='primary' onClick={() => console.log('button click')}>
-                          Manage Column
-                      </Button>{' '}
-                   </div>
-                    <div className="Add" >
-                    <Button variant='plain' color='primary' onClick={() => console.log('button click')}>
-                          + Add New Row
-                      </Button>{' '}
-                    </div>
-                  </div>
+                      Manage Column
+                  </Button>{' '}
+                </div>
+                <div className="Add" >
+                  <Button variant='plain' color='primary' onClick={handleAddRow}>
+                    + Add New Row
+                  </Button>{' '}
+                </div>
+              </div>  
+              )}
+              
               </div>
+              ))}
+
             </div>
             )}
           </TabItem>
@@ -544,6 +516,14 @@ const MetricSetting = ({ isMetricSettingOpen, setIsMetricSettingOpen }) => {
           </Button>
         </div>
       </div>
+
+      <ManageColumnModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        SelectedColumn={SelectedColumn}
+        handleColumnClick={handleColumnClick}
+      />
+
     </Modal>
   );
 };

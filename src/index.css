@@ -852,6 +852,36 @@ cursor: 'pointer'  */
 }
 
 
+.modal-body-columns {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  margin-bottom: 30px;
+}
+
+.modal-body-columns .column-chip {
+  padding: 5px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #041A2F;
+  font-size:  14px;
+}
+
+.modal-body-columns .column-chip:hover {
+
+  background-color: #E6EEFF;
+  color:#246EF6;
+}
+
+.modal-body-columns .column-selected {
+  background-color: #E6EEFF;
+  color: #041A2F;
+}
+
+
+
+
+
 
 
 

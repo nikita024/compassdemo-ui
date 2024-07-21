@@ -15,6 +15,8 @@ const FeedbackSurvey = ({ isFeedBackSurveyOpen, setIsFeedBackSurveyOpen }) => {
   const [activityScore, setActivityScore] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
 
+  
+
   useEffect(() => {
     console.log("questions", questions);
     validateForm();
