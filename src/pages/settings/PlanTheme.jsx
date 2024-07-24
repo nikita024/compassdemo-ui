@@ -11,6 +11,7 @@ import collectImg from '../../assets/images/collect.svg';
 import hikeImg from '../../assets/images/hike.svg';
 import salesImg from '../../assets/images/sales.svg';
 import mainImg from '../../assets/images/mainframe.svg';
+// import {ShapeImg} from "../../assets/images/Shape.svg";  
 
 const PlanTheme = ({ isPlanThemeOpen, setIsPlanThemeOpen }) => {
    const navigate = useNavigate();
@@ -52,15 +53,15 @@ const PlanTheme = ({ isPlanThemeOpen, setIsPlanThemeOpen }) => {
 
             <div className="plan-theme-card">
                <div className="theme-card-container">
-                  <div
-                     className={`theme-card ${selectedTheme === 'Mansion' ? 'selected' : ''}`}
-                     onClick={() => handleThemeSelect('Mansion')}
-                  >
-                     <h3 style={{"fontSize": "14px", marginBottom: "10px"}}>Mansion</h3>
-                     <img src={MansionImg} alt="mansion" />
-                  </div>
-                  <div
-                     className={`theme-card ${selectedTheme === 'Salesman' ? 'selected' : ''}`}
+                     <div
+                        className={`theme-card ${selectedTheme === 'Mansion' ? 'selected' : ''}`}
+                        onClick={() => handleThemeSelect('Mansion')}
+                     >
+                        <h3 style={{"fontSize": "14px", marginBottom: "10px"}}>Mansion</h3>
+                        <img src={MansionImg} alt="mansion" />
+                     </div>
+                     <div
+                        className={`theme-card ${selectedTheme === 'Salesman' ? 'selected' : ''}`}
                      onClick={() => handleThemeSelect('Salesman')}
                   >
                      <h3 style={{"fontSize": "14px", marginBottom: "10px"}}>Salesman</h3>
@@ -164,6 +165,8 @@ const PlanTheme = ({ isPlanThemeOpen, setIsPlanThemeOpen }) => {
                      <img src={collectImg} alt="theme" />
                      <img src={hikeImg} alt="theme" />
                   </div>
+                  
+                  {/* <img src={ShapeImg} alt="ShapeTheme"  /> */}
                   <p style={{ color: '#394960', fontSize: '14px', marginTop: '20px' }}>Images must be in .PNG or .JPG format and 150 x 150px in size</p>
 
                   <div className="main-frame">

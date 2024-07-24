@@ -15,27 +15,19 @@ const FeedbackSurvey = ({ isFeedBackSurveyOpen, setIsFeedBackSurveyOpen }) => {
   const [activityScore, setActivityScore] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
 
-  
-
   useEffect(() => {
     console.log("questions", questions);
     validateForm();
   }, [questions, whenToSendSurvey, activityScore]);
 
   const validateForm = () => {
-   
-    const allQuestionsFilled = questions.every(q => q.value.trim() !== '');
-   
+    
     const dropdownFilled = whenToSendSurvey.length > 0;
-   
     const activityScoreFilled = activityScore.trim() !== '';
-
-   
-    setIsFormValid(allQuestionsFilled && dropdownFilled && activityScoreFilled);
+    setIsFormValid( dropdownFilled && activityScoreFilled);
   };
 
   const handleSave = () => {
-    // navigate('/settings');
     setIsFeedBackSurveyOpen(false);
   };
 
@@ -51,9 +43,9 @@ const FeedbackSurvey = ({ isFeedBackSurveyOpen, setIsFeedBackSurveyOpen }) => {
     setQuestions(newQuestions);
   };
 
-  const handleInputChange = (id, event) => {
+  const handleDropdownQuestionChange = (id, event) => {
     const updatedQuestions = questions.map((question) =>
-      question.id === id ? { ...question, value: event.target.value } : question
+      question.id === id ? { ...question, value: event } : question
     );
     setQuestions(updatedQuestions);
   };
@@ -68,13 +60,14 @@ const FeedbackSurvey = ({ isFeedBackSurveyOpen, setIsFeedBackSurveyOpen }) => {
 
   return (
     <Modal
-      isOpen={isFeedBackSurveyOpen} 
+      style={{ backgroundColor: '#EFF2F5' }}
+      isOpen={isFeedBackSurveyOpen}
       onClose={() => {
         setIsFeedBackSurveyOpen(false);
-      }} 
+      }}
       fullScreen
-      padding={false} 
-      disableCloseButton={false} 
+      padding={false}
+      disableCloseButton={false}
       transitionDirection='up'
     >
       <div className="plan-theme">
@@ -94,49 +87,47 @@ const FeedbackSurvey = ({ isFeedBackSurveyOpen, setIsFeedBackSurveyOpen }) => {
                 <div style={{ borderRadius: '50%', backgroundColor: "#246EF6", padding: '2px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>{index + 1}</div>
               </div>
               <div style={{ width: '100%' }}>
-                <Input
-                  className="my-class"
-                  onBlur={() => {}}
-                  onChange={(e) => handleInputChange(question.id, e)}
-                  onFocus={() => {}}
-                  onKeyPress={() => {}}
-                  placeholder={question.placeholder}
+                <Dropdown
+                  placeholder='Select Option'
+                  isCreatable={true}
                   value={question.value}
+                  onChange={(e) => handleDropdownQuestionChange(question.id, e)}
+                  options={[
+                    { value: 'SUGGESTED QUESTIONS', label: 'SUGGESTED QUESTIONS' },
+                    { value: 'How were the tasks given to you?', label: 'How were the tasks given to you?' },
+                    { value: 'How were the rewards in this program?', label: 'How were the rewards in this program?' },
+                    { value: 'Is the program something you would like to participate in?', label: 'Is the program something you would like to participate in?' }
+                  ]}
                 />
               </div>
               <div style={{ width: '3%' }}>
                 {question.value ? (
-                  <Delete20Regular 
-                    onClick={() => removeQuestion(question.id)} 
-                    style={{ 
-                      marginLeft: '10px', 
-                      cursor: 'pointer', 
+                  <Delete20Regular
+                    onClick={() => removeQuestion(question.id)}
+                    style={{
+                      marginLeft: '10px',
+                      cursor: 'pointer',
                       color: '#246EF6',
                       width: '25px',
-                      height: '25px' 
-                    }} 
+                      height: '25px'
+                    }}
                   />
                 ) : (
                   <div>
-                    <img 
-                      src={EditImg} 
-                      alt="EditTheme" 
-                      style={{ 
-                        marginLeft: '10px', 
+                    <img
+                      src={EditImg}
+                      alt="EditTheme"
+                      style={{
+                        marginLeft: '10px',
                         cursor: 'pointer',
                         width: '25px',
-                        height: '25px' 
-                      }} 
+                        height: '25px'
+                      }}
                     />
                   </div>
                 )}
               </div>
             </div>
-            {/* {question.value && (
-              <div style={{ marginTop: '10px', color: 'green' }}>
-                Input has value: {question.value}
-              </div>
-            )} */}
           </div>
         ))}
 
@@ -165,15 +156,16 @@ const FeedbackSurvey = ({ isFeedBackSurveyOpen, setIsFeedBackSurveyOpen }) => {
               onChange={handleDropdownChange}
             />
           </div>
+
           <div style={{ width: '50%' }}>
             <Input
               className="my-class"
               style={{ width: '100%' }}
               label="Activity Score"
-              onBlur={() => {}}
+              onBlur={() => { }}
               onChange={handleActivityScoreChange}
-              onFocus={() => {}}
-              onKeyPress={() => {}}
+              onFocus={() => { }}
+              onKeyPress={() => { }}
               placeholder="Placeholder Text"
               value={activityScore}
             />
@@ -185,19 +177,19 @@ const FeedbackSurvey = ({ isFeedBackSurveyOpen, setIsFeedBackSurveyOpen }) => {
         <div className="left-buttons">
         </div>
         <div className="right-buttons">
-          <Button 
-            variant='outlined' 
-            className="button" 
+          <Button
+            variant='outlined'
+            className="button"
             onClick={handleSave}
           >
-              Cancel
+            Cancel
           </Button>
-          <Button 
+          <Button
             className="button"
-            onClick={handleSave} 
-            disabled={!isFormValid} 
+            onClick={handleSave}
+            disabled={!isFormValid}
           >
-              Save
+            Save
           </Button>
         </div>
       </div>

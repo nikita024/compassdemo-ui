@@ -462,7 +462,7 @@ const MetricSetting = ({ isMetricSettingOpen, setIsMetricSettingOpen }) => {
                 style={{
                   display: 'flex',
                   gap: '20px',
-                  marginLeft: '685px',
+                  marginLeft: '871px',
                 
                   }}
               >

@@ -726,7 +726,7 @@ cursor: 'pointer'  */
 .theme-card-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 50px;
+  gap: 110px;
   padding: 50px;
   
 }
@@ -855,7 +855,7 @@ cursor: 'pointer'  */
 .modal-body-columns {
   display: flex;
   flex-direction: row;
-  gap: 5px;
+  gap: 21px;
   margin-bottom: 30px;
 }
 

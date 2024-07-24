@@ -553,8 +553,8 @@ const Milestone = () => {
           flex-direction: row;
           border: 1px solid #ccc;
           border-radius: 20px;
-          padding: 8px 12px 8px 12px; 
-          margin: 10px 0;
+          padding: 8px 16px 8px 16px; 
+          margin: 10px 18px;
           background-color: #f9f9f9;
           gap:4px;
           height: 40px;

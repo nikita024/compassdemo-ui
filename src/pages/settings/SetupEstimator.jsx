@@ -38,6 +38,7 @@ const SetupEstimator = ({ isSetupEstimatorOpen, setIsSetupEstimatorOpen }) => {
 
   return (
     <Modal
+      style={{backgroundColor: '#EFF2F5'}}
       isOpen={isSetupEstimatorOpen} 
       onClose={() => {
         setIsSetupEstimatorOpen(false);
@@ -58,7 +59,7 @@ const SetupEstimator = ({ isSetupEstimatorOpen, setIsSetupEstimatorOpen }) => {
         <div className="estimator-card">
           {forms.map((form, index) => (
             <div key={form.id} className="estimator-card-container" style={{ marginBottom: '20px' }}>
-              <div style={{ marginBottom: '20px' }}>
+              <div style={{ marginBottom: '20px',width: '50%' }}>
                 <Input
                   className="my-class"
                   label={"Field " + (index + 1)}

@@ -457,7 +457,7 @@ const Settings = () => {
                     disabled={!isNextButtonEnabled} 
                     onClick={validateForm} 
                 >
-                    Next
+                    Publish
                 </Button>
             </div>
         </div>
