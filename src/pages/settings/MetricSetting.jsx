@@ -86,7 +86,9 @@ const MetricSetting = ({ isMetricSettingOpen, setIsMetricSettingOpen }) => {
 
               <div className="card">
                 <p style={{ color: "#273241" }}>
-                  While setting a target is not mandatory, we strongly recommend it. Having a target to aim for motivates participants and helps them improve their output. We also use the Target Value to create periodic nudges and celebrations to gamify the experience for them as well.
+                  While setting a target is not mandatory, we strongly recommend it. Having a target to aim for
+                  motivates participants and helps them improve their output. We also use the Target Value to 
+                  create periodic nudges and celebrations to gamify the experience for them as well.
                 </p>
               </div>
 
@@ -284,7 +286,8 @@ const MetricSetting = ({ isMetricSettingOpen, setIsMetricSettingOpen }) => {
                       <Checkbox />
                     </div>
                     <p style={{ color: 'black' }}>
-                      Weighted Incentive = (GWP Achievement Percentage* 0.45)+ (Non Motor Achievement Percent* 0.15) Percent* 0.1)+ (Incremental Activ Ach Percent* 0.1)+ (Health Active Percentage* 0.1) WHERE(Last Upload Date BETWEEN
+                      Weighted Incentive = (GWP Achievement Percentage* 0.45)+ (Non Motor Achievement Percent* 0.15) Percent* 0.1)+
+                       (Incremental Activ Ach Percent* 0.1)+ (Health Active Percentage* 0.1) WHERE(Last Upload Date BETWEEN
                     </p>
                   </div>
 

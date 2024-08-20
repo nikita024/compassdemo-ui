@@ -71,7 +71,6 @@ const Settings = () => {
     };
 
     const handlePlanThemeClick = () => {
-        // navigate('/plan-theme');
         setIsPlanThemeOpen(true);
     }
 

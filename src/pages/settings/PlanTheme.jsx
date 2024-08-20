@@ -35,7 +35,8 @@ const PlanTheme = ({ isPlanThemeOpen, setIsPlanThemeOpen }) => {
    };
 
    return (
-      <Modal 
+      <Modal
+        style={{"backgroundColor": "#EFF2F5"}} 
         isOpen={isPlanThemeOpen} 
         onClose={() => {
             setIsPlanThemeOpen(false);
@@ -52,7 +53,7 @@ const PlanTheme = ({ isPlanThemeOpen, setIsPlanThemeOpen }) => {
             </div>
 
             <div className="plan-theme-card">
-               <div className="theme-card-container">
+               <div className="theme-card-container" style={{cursor: "pointer"}}>
                      <div
                         className={`theme-card ${selectedTheme === 'Mansion' ? 'selected' : ''}`}
                         onClick={() => handleThemeSelect('Mansion')}
@@ -138,7 +139,7 @@ const PlanTheme = ({ isPlanThemeOpen, setIsPlanThemeOpen }) => {
                <Typography 
                   variant='h3' 
                   component='h3'
-                  style={{ color: '#000' }}
+                  style={{ color: '#000'}}
                >
                   Create Theme
                </Typography>

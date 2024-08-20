@@ -68,14 +68,14 @@ const AddForm = ({
                         onChange={data => handleDropdownChange('condition', data)}
                     />
                 </div>
-                <div className="dropdown" style={{ padding: '21px ' }}>
+                <div className="dropdown" style={{ padding: '21px'}}>
                     
                     <Dropdown
                         options={dropdownOptions}
                         size="sm"
                         menuWidth={320}
                         placeholder="choose Operator"
-                        label=""
+                        // label=""
                         menuPlacement="bottom"
                         isClearable={false} 
                         isMulti={false}
@@ -83,7 +83,7 @@ const AddForm = ({
                     />
                     
                 </div>
-                <div className="input-container">
+                <div className="input-container" style={{ padding: '21px ' }}>
                     <Input
                         className="input"
                         label=""

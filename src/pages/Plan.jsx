@@ -202,7 +202,6 @@ function Plan() {
                             />
                         </div>
                     </div>
-                    <div></div>   
                 </div>
                 <div className="box-container">
                     <div className="box-content" onClick={() => handlePlanTypeClick('milestone')}>

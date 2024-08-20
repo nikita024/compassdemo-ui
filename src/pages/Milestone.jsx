@@ -15,6 +15,7 @@ import editImg from '../assets/images/Edit.svg';
 import { Edit20Regular } from '@fluentui/react-icons';
 import FooterMilestone from '../components/FooterMilestone';
 import { useNavigate } from 'react-router-dom';
+// import EditIcon from '@mui/icons-material/Edit';
 
 const rewardDropdownOptions = [
   { value: 'Theresa Webb', label: 'Theresa Webb' },
@@ -36,25 +37,24 @@ const Milestone = () => {
   const [selectedBadge, setSelectedBadge] = useState([]);
   const [selectedScores, setSelectedScores] = useState([]);
   const [savedRewards, setSavedRewards] = useState([]);
-
   const [milestoneText, setMilestoneText] = useState('Milestone');
   const [editMode, setEditMode] = useState(false);
   const [newMilestoneText, setNewMilestoneText] = useState('');
-
-  const [milestoneDesc, setMilestoneDesc] = useState('');
+ const [milestoneDesc, setMilestoneDesc] = useState('');
   const [editModeDesc, setEditModeDesc] = useState(false);
   const [newMilestoneDesc, setNewMilestoneDesc] = useState('');
-
   const [accordionCount, setAccordionCount] = useState(1);
   const [addFormCount, setAddFormCount] = useState(1);
-
   const [isRewardFormComplete, setIsRewardFormComplete] = useState(false);
-
   const [addFormState, setAddFormState] = useState({
     condition: null,
     operator: null,
     value: ''
   });
+
+  const [editRewardIndex, setEditRewardIndex] = useState(null);
+  const [editRewardData, setEditRewardData] = useState(null);
+  
 
   const isFormComplete = addFormState.condition && addFormState.operator && addFormState.value;
 
@@ -76,7 +76,13 @@ const Milestone = () => {
   const handleAddReward = () => {
     setShowRewardForm(true);
     setIsRewardFormComplete(false);
-  };
+    setEditRewardIndex(null);
+    setEditRewardData(null);
+    setRewardType('');
+    setRewardAmountCondition('');
+    setSelectedBadge([]);
+    setSelectedScores([]);
+   };
 
   const handleRewardTypeChange = (e) => {
     setRewardType(e.target.value);
@@ -126,9 +132,20 @@ const Milestone = () => {
       rewardType,
       rewardAmountCondition,
       selectedBadge,
-      selectedScores
+      selectedScores,
+      
     };
-    setSavedRewards([...savedRewards, rewardData]);
+
+    if (editRewardIndex !== null) {
+      const updatedRewards = [...savedRewards];
+      updatedRewards[editRewardIndex] = rewardData;
+      setSavedRewards(updatedRewards);
+      setEditRewardIndex(null);
+      setEditRewardData(null);
+    } else {
+      setSavedRewards([...savedRewards, rewardData]);
+    }
+    // setSavedRewards([...savedRewards, rewardData]);
     setShowRewardForm(false);
     setRewardType('');
     setRewardAmountCondition('');
@@ -159,10 +176,32 @@ const Milestone = () => {
             <p> {rewardData.selectedScores.map(s => s.label).join(', ')}</p>
             <p>{rewardData.rewardAmountCondition}</p>
           </>
-        )}
-      </div>
+           )}
+           <Button 
+          variant='fill' 
+          color='primary' 
+          onClick={() => handleEditReward(index) } 
+          style={{ display: 'flex', alignItems: 'center', marginLeft: '10px' }}
+        >
+          <Edit20Regular style={{ marginRight: '5px' }} />
+         </Button>
+        </div>
+        
     );
   };
+
+  const handleEditReward = (index) => {
+    const rewardData = savedRewards[index];
+    setEditRewardIndex(index);
+    setEditRewardData(rewardData);
+    setRewardType(rewardData.rewardType);
+    setRewardAmountCondition(rewardData.rewardAmountCondition);
+    setSelectedBadge(rewardData.selectedBadge);
+    setSelectedScores(rewardData.selectedScores);
+    setParticipants([]);  
+    setShowRewardForm(true);
+  };
+  
 
   const handleEditClick = (e) => {
     e.stopPropagation();
@@ -360,20 +399,39 @@ const Milestone = () => {
             }}
           >
             <div style={{
+              display : 'flex',
+              alignItems: 'center',
               backgroundColor: '#E6EEFF',
               borderRadius: '25px',
-              border: '1px solid #C6FFEC',
+              // border: '1px solid #C6FFEC',
               textAlign: 'center',
               cursor: 'pointer',
               padding: '8px 30px',
               letterSpacing: '1px',
               fontSize: '16px',
               fontWeight: '500',
-              color: "#246EF6"
+              color: "#246EF6",
+              gap: '10px',
+             
             }}>
               + Add <span style={{ fontWeight: '700' }}>OR</span> Condition
             </div>
-          </div>
+            <button style={{
+                background: 'none',
+                border: 'none',
+                padding:'10px',
+                cursor: 'pointer',
+                color: '#246EF6',
+                fontSize: '14px',
+                marginLeft: '1180px',
+                }}>
+                  {/* <div className="erase" style={{cursor: 'pointer'}}> */}
+              <img src={editImg} alt="edit" />
+              {/* </div> */}
+             Edit Condition 
+            </button>
+                </div>
+        
 
           <div className="accordion-divider" style={{border:'1px solid #EFF2F5',margin:'15px'}}></div>
         
@@ -402,6 +460,7 @@ const Milestone = () => {
                     label='Participants'
                     options={rewardDropdownOptions}
                     onChange={handleParticipantsChange}
+                    // value={participants}
                   />
                 </div>
 
@@ -409,9 +468,9 @@ const Milestone = () => {
                   Reward Type
                 </div>
                 <RadioGroup direction='row' label='Reward Type'>
-                  <Radio label='Points' name='radio' value='points' onChange={handleRewardTypeChange} />
-                  <Radio label='Scores' name='radio' value='scores' onChange={handleRewardTypeChange} />
-                  <Radio label='Badges' name='radio' value='badges' onChange={handleRewardTypeChange} />
+                  <Radio label='Points' name='radio' value='points' onChange={handleRewardTypeChange}  checked={rewardType === 'points'}/>
+                  <Radio label='Scores' name='radio' value='scores' onChange={handleRewardTypeChange}  checked={rewardType === 'scores'}/>
+                  <Radio label='Badges' name='radio' value='badges' onChange={handleRewardTypeChange}  checked={rewardType === 'badges'}/>
                 </RadioGroup>
 
                 {rewardType === 'points' && (
@@ -422,7 +481,7 @@ const Milestone = () => {
                         label="Reward Amount or Condition "
                         onBlur={function noRefCheck() { }}
                         onChange={handleRewardAmountConditionChange}
-                        onFocus={function noRefCheck() { }}
+                        value={rewardAmountCondition}
                         onKeyPress={function noRefCheck() { }}
                         placeholder="Placeholder Text"
                       />
@@ -456,6 +515,7 @@ const Milestone = () => {
                         label='Select Score'
                         options={rewardDropdownOptions}
                         onChange={handleScoresChange}
+                        value={selectedScores}
                       />
                     </div>
 
@@ -465,7 +525,7 @@ const Milestone = () => {
                         label="Reward Amount or Condition "
                         onBlur={function noRefCheck() { }}
                         onChange={handleRewardAmountConditionChange}
-                        onFocus={function noRefCheck() { }}
+                        value={rewardAmountCondition}
                         onKeyPress={function noRefCheck() { }}
                         placeholder="Placeholder Text"
                       />
@@ -485,23 +545,24 @@ const Milestone = () => {
                         label='Select badge'
                         options={rewardDropdownOptions}
                         onChange={handleBadgeChange}
+                        value={selectedBadge}
                       />
                     </div>
                   </>
                 )}
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px', color: 'white', }}>
+                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px', color: 'white', }}>
                   <Button
                     variant='fill'
                     color='primary'
                     style={{ backgroundColor: '#007bff' }}
                     onClick={handleSave}
-                    disabled={isSaveButtonDisabled()}
+                    disabled={isSaveButtonDisabled()  }
                   >
                     Save
                   </Button>
-                </div>
+                  </div>
               </div>
             )}
 
@@ -536,18 +597,14 @@ const Milestone = () => {
                 + Add {accordionCount + 1} milestone
             </Button>
         </div>
-          
-        </div>
-       
       </div>
-
-      <FooterMilestone
+    </div>
+     <FooterMilestone
         isRewardFormComplete={isRewardFormComplete}
         isFormComplete={isFormComplete}
         handleNext={handleNext}
       />
-
-      <style >{`
+     <style >{`
         .badge {
           display: flex;
           flex-direction: row;
@@ -561,7 +618,7 @@ const Milestone = () => {
           width: fit-content;
         }
       `}</style>
-     
+      
     </>
     
   );
